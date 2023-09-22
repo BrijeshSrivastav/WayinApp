@@ -10,7 +10,7 @@ const Splash = ({navigation}) => {
   }, []);
   return (
     <View>
-      <Text>Splash</Text>
+      <Text>Splash -- KDtest Here </Text>
     </View>
   );
 };
