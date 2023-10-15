@@ -7,7 +7,7 @@ import Icon, {Icons} from '../components/Icons';
 
 const SubCategoryItem=(props)=>{
     return(
-      <TouchableOpacity style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center',padding:13}} onPress={() => props.navigation.navigate('subcategory')}>  
+      <TouchableOpacity style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center',padding:13}} onPress={() => props.navigation.navigate('listing')}>  
     <View>
           <View style={{ borderRadius:30, borderWidth:0.5,width:50, height:50, borderColor:'#00A1A0',justifyContent:'center'}}>
             <Image style={{width:50, height:50}}

@@ -1,25 +1,25 @@
 import { ActionTypes } from "../redux/constants/action-types";
 
-export const setUserList = (data) => {
+export const setCatList = (data) => {
     //alert(JSON.stringify(data))
   return {
-    type: ActionTypes.SET_USER_LIST,
+    type: ActionTypes.SET_CAT_LIST,
     payload: data,
   };
 };
 
-export const getUserList = (data) => {
+export const getCatList = (data) => {
   //alert(JSON.stringify(data))
 return {
-  type: ActionTypes.GET_USER_LIST,
+  type: ActionTypes.GET_CAT_LIST,
   payload: data,
 };
 };
 
-export const errorUserList = (data) => {
+export const errorCatList = (data) => {
   //alert(JSON.stringify(data))
 return {
-  type: ActionTypes.SET_USER_LIST_ERROR,
+  type: ActionTypes.SET_CAT_LIST,
   payload: data,
 };
 };

@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import { userReducer } from '../redux/userReducer'
+import { catReducer } from '../redux/categoryReducer'
 export default combineReducers({
-    userReducer,
+    catReducer,
 })

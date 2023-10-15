@@ -8,7 +8,6 @@
 import  React,{useEffect,useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -19,9 +18,12 @@ import {
   Alert,
   Image,
   ImageBackground,
+  FlatList,
+  ActivityIndicator,
+  ScrollView
   
 } from 'react-native';
-
+//import { ScrollView } from 'react-native-virtualized-view'
 import SvgUri from 'react-native-svg-uri';
 //import { SvgUri } from 'react-native-svg';
 
@@ -31,34 +33,83 @@ import Icon, {Icons} from '../components/Icons';
 import CarouseBanner from '../components/CarouseBanner'
 import {homePageApi} from '../normalapi'
 import { useSelector, useDispatch } from 'react-redux'
-import {getUserList} from '../redux/useraction'
+import {getCatList} from '../redux/categoryaction'
+import Loading from '../components/Loading';
+import { LogBox } from 'react-native'
 function Home({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch()
+  const [islodinghome,setLoadingHome]=useState(false);
+  const [resdata,setResponseData]=useState('');
   const getData=async ()=>{
+    //setLoadingHome(false)
     await homePageApi().then((res)=>{
-      console.log(res);
-     // alert(JSON.stringify(res));
+     setResponseData(res);
+     setLoadingHome(true);
     }).catch((error)=>{
+      setLoadingHome(true);
       console.log(error);
     })
   }
   useEffect(() => {
     getData();
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested","Each child in a list should have a unique key prop"]);
+    //LogBox.ignoreLogs(["Each child in a list should have a unique key prop"]);
   }, []);
  
-  let userList=useSelector((state)=>state.userReducer.userList);
-  let isloding=useSelector((state)=>state.userReducer.isloding);
-  useEffect(() => {
-    //Runs only on the first render
-    dispatch(getUserList(true));
-  },[dispatch]);
+  // let userList=useSelector((state)=>state.catReducer.userList);
+  // let isloding=useSelector((state)=>state.userReducer.isloding);
+  // useEffect(() => {
+  //   //Runs only on the first render
+  //   dispatch(getUserList(true));
+  // },[dispatch]);
   //alert(JSON.stringify(userList));
 
   function aaa(){
-    Alert.alert('Click here for voice search ');
-  }
+    //Alert.alert('Click here for voice search ');
+    //navigation.navigate('listing')
 
+    navigation.navigate('details')
+  }
+  let isloding=useSelector((state)=>state.catReducer.isloding);
+  const RenderItemData = (props) => {
+  return(
+    <>
+    
+    <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
+      <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
+        source={{
+          uri: 'https://askwayin.com/assets/images/'+props.itemData.photo,
+        }} />
+      </View>
+      <Text numberOfLines={2} style={{fontSize: 12, height:50, fontWeight: 'bold',color:'#000000', marginTop:5}}>{props.itemData.title}</Text>
+    </View>
+    {props.arr === 6 &&
+    (
+      <TouchableOpacity style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center'}} 
+      onPress={()=>{
+        dispatch(getCatList(''))
+        navigation.navigate('category')
+        }}>
+     {isloding===true ? (<ActivityIndicator  />):
+     (  
+      <>  
+    <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0',}}>
+      <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
+        source={require('../../imgss/explore.png')} />
+    </View>
+    <Text numberOfLines={2} style={{fontSize: 12, height:50,fontWeight: 'bold', color:'#000000', marginTop:5}}>Explore</Text>
+        </>  
+     )}
+    </TouchableOpacity>)} 
+    </>
+  )
+};
+  
+if(resdata==""){
+return(<Loading sizes="small" colors="#0000ff"></Loading>)
+}else{
   return (
     <SafeAreaView >
       <StatusBar
@@ -68,10 +119,13 @@ function Home({navigation}) {
       <Header navigation={navigation}/>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
+        nestedScrollEnabled={true} 
+        style={{ width: "100%" }}
+      
         //</SafeAreaView>style={backgroundStyle}
         >
-
-      <View style={{backgroundColor:'#00A1A0', }}>
+{islodinghome === false ? (<ActivityIndicator />) :
+     (<View style={{backgroundColor:'#00A1A0', }}>
         <View style={{marginTop:10, marginLeft:8, marginRight:8, borderTopLeftRadius:15, borderTopRightRadius:12, backgroundColor:'#ffffff'}}>
           <View style={{padding:8, borderRadius:15}}>
             <View style={{justifyContent: 'center', alignItems: 'center', flexDirection:'row', width: '100%', height:50, borderRadius:15, backgroundColor:'#F3F2F2', marginTop: 0, paddingRight:6, paddingLeft:6}}>
@@ -86,7 +140,7 @@ function Home({navigation}) {
               />
 
               <View style={{padding:6}}> 
-              <TouchableOpacity onPress = {aaa}>
+              <TouchableOpacity >
                 <Image
                   source={require('../../imgss/microphone.png')}
                   style={{ height: 20, width: 20, margin:5,tintColor:'#7B7B7B'}}/>
@@ -102,34 +156,9 @@ function Home({navigation}) {
               </View>
             </View>
           </View>
-
-
-       
-
-
           <View style={{padding:5, borderRadius:15}}>
           <CarouseBanner />
-            {/* <ImageSlider 
-   data={[
-    {img: 'https://img.freepik.com/free-vector/flat-design-sale-background_23-2149066483.jpg?w=740&t=st=1695827857~exp=1695828457~hmac=3430d82958884e69c36deca7f615804bd04304e3a248f5968b8f086f046c80de'},
-    {img: 'https://img.freepik.com/free-psd/super-sale-banner_1393-365.jpg?1&w=740&t=st=1695827925~exp=1695828525~hmac=4922cf01bf827e6e5a2dc76f4990a3757447cf81210be1449c7ab01b6973bc28'},
-    {img: 'https://img.freepik.com/free-vector/mega-sale-banner-blue-yellow-colors_1017-32176.jpg?w=826&t=st=1695828006~exp=1695828606~hmac=4d0348a87a8bd5a37a2417188f9e3a8c7980ddd084b24ceded4bc7be1faaf88b'}
-]}
-    autoPlay={false}
-    onItemChanged={(item) => console.log("item", item)}
-    closeIconColor="#fff"
-   
-    caroselImageStyle={{
-      height: 110,
-      width: 300,
-      //padding:5,
-      borderRadius:15,
-      marginLeft:6,
-      resizeMode: 'cover',
-      }}
-     
-     
-/> */}
+          
           </View>
 
          
@@ -148,117 +177,42 @@ function Home({navigation}) {
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'center', alignItems: 'center', marginTop: 2}}>
-            <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-              <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-                source={require('../../imgss/loudspeaker.png')} />
-              </View>
-              <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', marginTop:5}}>Deals</Text>
-            </View>
-            <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-              <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-                source={require('../../imgss/restaurant.png')} />
-                </View>
-                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', marginTop:7}}>Restaurent</Text>
-            </View>
-            <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-              <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-                source={require('../../imgss/weightlifting.png')} />
-                </View>
-                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', marginTop:5}}>Gym</Text>
-            </View>
-            <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-              <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-                source={require('../../imgss/massage.png')} />
-                </View>
-                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', marginTop:5}}>Massage</Text>
-            </View>
+    <View>
+        <FlatList
+        data={resdata.homecategory}
+        renderItem={({item,index}) => <RenderItemData itemData={item}  arr={index}/>}
+        keyExtractor={item => item.id}
+        numColumns={4}
+       
+      />
           </View>
-
-          <View style={{ flexDirection: 'row', paddingLeft: 10, paddingRight: 10, paddingTop: 10, paddingBottom: 30, justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
-          <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-              <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-                source={require('../../imgss/restaurant.png')} />
-                </View>
-                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', marginTop:7}}>Restaurent</Text>
-            </View>
-            <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-              <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-                source={require('../../imgss/weightlifting.png')} />
-                </View>
-                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', marginTop:5}}>Gym</Text>
-            </View>
-            <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-              <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-                source={require('../../imgss/massage.png')} />
-                </View>
-                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', marginTop:5}}>Massage</Text>
-            </View>        
-            <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0',}}>
-              <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-                source={require('../../imgss/explore.png')} />
-                </View>
-                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#000000', marginTop:5}}>Explore</Text>
-            </View>         
-          </View>
-
-          
-         {/* //https://stackoverflow.com/questions/29322973/whats-the-best-way-to-add-a-full-screen-background-image-in-react-native */}
-        </View>
+        </View> 
 
 
         <View style={{marginTop:0, backgroundColor:'#ffffff'}}>
+          
           <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
+          nestedScrollEnabled={true} 
+         
           >
-          <View style={{ justifyContent: 'center', alignItems: 'center', padding:5 }}>
-            <ImageBackground style={{width:120, height:140}}
-              imageStyle={{ borderRadius: 12}}
-              source={require('../../imgss/bel1.jpeg')} 
-              >
-               
-            </ImageBackground>
-              {/* <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#000000'}}>Real Estate</Text> */}
-          </View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
+           {resdata.smallbanner.map((item, index) => {
+            return(
+          <View style={{justifyContent: 'center', alignItems: 'center', padding:5}}  key={item.id}>
           <ImageBackground style={{width:120, height:140}}
               imageStyle={{ borderRadius: 12}}
-              source={require('../../imgss/bel2.jpeg')} >
-              <Text numberOfLines={1} style={{fontSize: 12, fontWeight: 'bold', color:'#FFF',paddingTop:15,paddingLeft:10,paddingRight:15}}>Doctors </Text>
-<Text  style={{fontSize: 11, width:52,fontWeight: 'normal', color:'#FFF',paddingLeft:10}}>Consult
-Now</Text>
-</ImageBackground>
+              source={{
+                uri: 'https://askwayin.com/assets/images/'+item.photo,
+              }} >
+              <Text numberOfLines={1} style={{fontSize: 12, fontWeight: 'bold', color:'#FFF',paddingTop:15,paddingLeft:10,paddingRight:15}}>{item.title} </Text>
+              <Text  style={{fontSize: 11, width:55,fontWeight: 'normal', color:'#FFF',paddingLeft:10,height:50}}>{item.subtitle}</Text>
+          </ImageBackground>
           </View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
-          <ImageBackground style={{width:120, height:140}}
-              imageStyle={{ borderRadius: 12}}
-              source={require('../../imgss/bel3.jpeg')} >
-                 <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#FFF',paddingTop:15,paddingLeft:10,paddingRight:15,width:80}}>Home Services </Text>
-<Text  style={{fontSize: 11, width:60,fontWeight: 'normal', color:'#FFF',paddingLeft:10}}>Connect with
-our Experts</Text>
-</ImageBackground>
-          </View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
-          <ImageBackground style={{width:120, height:140}}
-              imageStyle={{ borderRadius: 12}}
-              source={require('../../imgss/bel4.jpeg')} >
-             </ImageBackground>
-          </View>
+            );
+          })}
           </ScrollView>
         </View>
-
-        {/* <View style={{backgroundColor:'#00A1A0', }}>
-          <View style={{backgroundColor:'#ffffff', marginRight:12, marginLeft:12, height:80, width:'95%'}}></View>
-        </View> */}
 
         <View style={{marginTop:0, paddingTop:30, backgroundColor:'#ffffff'}}>
           <ImageBackground 
@@ -288,13 +242,21 @@ our Experts</Text>
               <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
+              nestedScrollEnabled={true} 
+              
               >
-              <View style={{ justifyContent: 'center', alignItems: 'center', padding:5, }}>
+                 {resdata.popularcat.map((item, index) => {
+              return(
+              <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}} key={item.id}>
                 <Image style={{width:120, height:140, borderRadius: 12}}
-                  source={require('../../imgss/bel3.jpeg')} />
-                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:10}}>Repair</Text>
+                  source={{
+                    uri: 'https://askwayin.com/assets/images/'+item.photo1,
+                  }} />
+                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:10}}>{item.title}</Text>
               </View>
-              <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
+                 );
+                })}
+              {/* <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
                 <Image style={{width:120, height:140, borderRadius: 12}}
                   source={require('../../imgss/bel2.jpeg')} />
                   <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:10}}>Job/Career</Text>
@@ -308,7 +270,7 @@ our Experts</Text>
                 <Image style={{width:120, height:140, borderRadius: 12}}
                   source={require('../../imgss/bel4.jpeg')} />
                   <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:10}}>Real Estate</Text>
-              </View>
+              </View> */}
               </ScrollView>
             </View>
           </ImageBackground >
@@ -375,13 +337,21 @@ our Experts</Text>
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               style={{paddingLeft:12, }}
+              nestedScrollEnabled={true} 
+             
               >
-              <View style={{ justifyContent: 'center', alignItems: 'center', padding:5, }}>
+            {resdata.partners.map((item, index) => {
+              return(
+               <View style={{ justifyContent: 'center', alignItems: 'center', padding:5, }} key={item.id}>
                 <Image style={{width:180, height:45, borderRadius: 12}}
-                  source={require('../../imgss/imgep1.png')} />
+                 source={{
+                  uri: 'https://askwayin.com/assets/images/'+item.photo,
+                }} />
                   <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:6}}>Real Estate</Text>
-              </View>
-              <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
+              </View> 
+                 );
+                })}
+              {/* <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
               <Image style={{width:180, height:45, borderRadius: 12}}
                   source={require('../../imgss/imgp5.png')} />
                   <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:6}}>Real Estate</Text>
@@ -395,7 +365,7 @@ our Experts</Text>
               <Image style={{width:180, height:45, borderRadius: 12}}
                   source={require('../../imgss/imgp4.png')} />
                   <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:6}}>Real Estate</Text>
-              </View>
+              </View> */}
               </ScrollView>
             </View>
 
@@ -446,12 +416,12 @@ our Experts</Text>
             
             </View>
 
-      </View>
+      </View>)}
 
 
       </ScrollView>
     </SafeAreaView>
   );
 }
-
+}
 export default Home;

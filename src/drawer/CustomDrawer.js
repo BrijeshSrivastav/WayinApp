@@ -27,6 +27,7 @@ const CustomDrawer = (props) => {
  
   const MenuArr = [
     {
+    ids:100,
     headingtitle:"Profile Setting",
     submenuitem:[{
       id:1,
@@ -63,6 +64,7 @@ const CustomDrawer = (props) => {
     }],
 },
 {
+  ids:200,
   headingtitle:"Useful Links",
   submenuitem:[{
     id:5,
@@ -107,6 +109,7 @@ const CustomDrawer = (props) => {
 ],
 },
 {
+  ids:300,
   headingtitle:"Support",
   submenuitem:[{
     id:10,
@@ -127,6 +130,7 @@ const CustomDrawer = (props) => {
 ],
 },
 {
+  ids:400,
   headingtitle:"Preferences",
   submenuitem:[{
     id:12,
@@ -252,10 +256,9 @@ const CustomDrawer = (props) => {
       return (
        
         <View
-        //key={index.toString}
+         key={item.ids}
         >
         <Text
-           key={index.toString}
           style={{
             color: '#000',
             fontSize: 14,
@@ -270,7 +273,7 @@ const CustomDrawer = (props) => {
             return (
               <>
             <View
-              key={subitem.id.toString}
+              key={subitem.id}
               style={{
                 width: '100%',
                 height: Platform.OS === 'ios' ? 60 : 65,

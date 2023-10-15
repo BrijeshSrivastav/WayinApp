@@ -86,7 +86,7 @@ export default function SubCategory({navigation}) {
      <View style={styles.listviewM}>
      <FlatList
         data={DATA}
-        renderItem={({item}) => <SubCategoryItem itemData={item} />}
+        renderItem={({item}) => <SubCategoryItem itemData={item} navigation={navigation}/>}
         keyExtractor={item => item.id}
         numColumns={4}
       />

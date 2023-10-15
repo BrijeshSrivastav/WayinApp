@@ -9,7 +9,7 @@ const Categoriesheader=(props)=>{
      <View style={styles.container}> 
      <ImageBackground
           source={ImageFilesData.categoryheader}
-          resizeMode='contains'
+          //resizeMode='contains'
           style={styles.container}
           >
           <View style={styles.locationview}>  

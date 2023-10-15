@@ -4,6 +4,8 @@ import Categoriesheader from '../components/Categoriesheader';
 const {height, width} = Dimensions.get('window');
 import CategoryItem from '../components/CategoryItem';
 import { ImageFilesData } from '../constants/images';
+import { useSelector, useDispatch } from 'react-redux'
+import Loading from '../components/Loading';
 export default function Category({navigation}) {
   const DATA = [
     {
@@ -42,24 +44,33 @@ export default function Category({navigation}) {
       cat_img:ImageFilesData.loudspeaker
     },
   ];
+    let catList = useSelector((state)=>state.catReducer.catList);
+   //alert(JSON.stringify(catList));
+   //alert(catList.data.allcategories);
+ if(catList === ""){
+  <Loading  sizes="small" colors="#0000ff"></Loading>
+ }else{
   return (
     <SafeAreaView style={styles.container}>
      <Categoriesheader navigation={navigation}/>
-     <View style={styles.listviewM}>
+    <View style={styles.listviewM}>
      <FlatList
-        data={DATA}
+        data={catList.data.allcategories}
         renderItem={({item}) => <CategoryItem itemData={item} navigation={navigation}/>}
         keyExtractor={item => item.id}
         numColumns={4}
+        contentContainerStyle={{ paddingBottom: 100}}
       />
       </View>
     </SafeAreaView>
   );
 }
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
+    flexGrow:1
   },
   
   listviewM:{

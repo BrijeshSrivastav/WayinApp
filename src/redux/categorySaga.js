@@ -1,31 +1,32 @@
 import { takeEvery, put ,call} from 'redux-saga/effects'
 import { ActionTypes } from "../redux/constants/action-types";
-import { setUserList,errorUserList} from './useraction';
+import { setCatList,errorCatList} from './categoryaction';
 import axios from 'axios';
+
 
 function* getAllUser(action) {
   yield axios.get('http://leadadmin.appsfiber.com/adminapi/manage_admin_users.php');
 }
 
 
-function* fetchUser(action) {
+function* fetchCat(action) {
   //alert(JSON.stringify(action))
   try {
     //alert("www");
-    const user = yield axios.get('https://askwayin.com/api/home');
+    const user = yield axios.get('https://askwayin.com/api/allcategory');
     //alert("uuu "+JSON.stringify(user));
-    yield put(setUserList(user))
+    yield put(setCatList(user))
   } catch (e) {
-    yield put(errorUserList(e.message))
+    yield put(errorCatList(e.message))
   }
 }
 
 
 
-function* userSaga() {
-    yield takeEvery(ActionTypes.GET_USER_LIST, fetchUser)
+function* catSaga() {
+    yield takeEvery(ActionTypes.GET_CAT_LIST, fetchCat)
     //yield takeEvery(SEARCH_PRODUCT, searchProducts)
 
 }
 
-export default userSaga;
+export default catSaga;

@@ -7,7 +7,9 @@ import * as Animatable from 'react-native-animatable';
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Parent');
+      //navigation.navigate('Parent');
+      navigation.navigate('SignInScreen');
+      
     }, 2000);
   }, []);
   return (
