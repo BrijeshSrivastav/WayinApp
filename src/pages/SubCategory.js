@@ -6,6 +6,8 @@ import CategoryItem from '../components/CategoryItem';
 import { ImageFilesData } from '../constants/images';
 import SubCategoryheader from '../components/SubCategoryheader';
 import SubCategoryItem from '../components/SubCategoryItem';
+import { useSelector, useDispatch } from 'react-redux'
+import Loading from '../components/Loading';
 export default function SubCategory({navigation}) {
   const DATA = [
     {
@@ -74,33 +76,42 @@ export default function SubCategory({navigation}) {
       cat_img:ImageFilesData.subcate_image15
     },
   ];
+  let subcatList = useSelector((state)=>state.catReducer.subcatList);
+  //alert("ssssss "+subcatList);
+  if(subcatList === ""){
+    return (<Loading sizes="small" colors="#0000ff"></Loading>);
+   }else{
   return (
     <SafeAreaView style={styles.container}>
      <SubCategoryheader navigation={navigation}/>
-     <View style={{height:110,width:300,borderRadius:15,marginTop:1,marginLeft:10,marginRight:10}}>
+     <View style={{height:110,width:'100%',borderRadius:15, paddingLeft:5, paddingRight:5}}>
       <Image
         source={ImageFilesData.subcate_banner}
-        style={{height:110,width:350,borderRadius:15}}
+        style={{height:110,width:'100%',borderRadius:15}}
     /> 
    </View>
-     <View style={styles.listviewM}>
+     {/* <View style={styles.listviewM}> */}
      <FlatList
-        data={DATA}
+        data={subcatList.data.subcategory}
         renderItem={({item}) => <SubCategoryItem itemData={item} navigation={navigation}/>}
         keyExtractor={item => item.id}
+        contentContainerStyle={{ paddingBottom: 40, marginTop:12}}
         numColumns={4}
       />
-      </View>
+      {/* </View> */}
     </SafeAreaView>
   );
+}
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#ffffff',
+    flexGrow:1
   },
   
   listviewM:{
-    marginTop:15
+    marginTop:15,
+    marginBottom:200
   }
 });

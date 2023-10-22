@@ -1,4 +1,4 @@
-import React,{Fragment} from 'react';
+import React,{Fragment,useEffect,useState} from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,8 @@ import {
   Button,
   Alert,
   Platform,
-  SafeAreaView
+  SafeAreaView,
+  AsyncStorage
 } from 'react-native';
 //import {Platform, StyleSheet} from 'react-native';
 import {
@@ -21,7 +22,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { ImageFilesData } from '../constants/images';
 import CommonCard from '../common/CommonCard';
-
+import { useSelector, useDispatch } from 'react-redux'
 
 const CustomDrawer = (props) => {
  
@@ -159,6 +160,40 @@ const CustomDrawer = (props) => {
 ],
 }
 ];
+const dispatch = useDispatch()
+//let userdata=useSelector((state)=>state.userReducer.userdata);
+// let username_d=useSelector((state)=>state.userReducer.username_d);
+// const [username,setUserName]=useState('');
+var user_name="";
+// const getData = async () => {
+//   try {
+//     user_name = await AsyncStorage.getItem('user_name');
+//   } catch (e) {
+//     // error reading value
+//   }
+// };
+//getData();
+
+// const removeItemValue=async()=> {
+//   try {
+//       await AsyncStorage.removeItem("user_name");
+//       await AsyncStorage.removeItem("user_email");
+//       await AsyncStorage.removeItem("token");
+//       return true;
+//   }
+//   catch(exception) {
+//       return false;
+//   }
+// }
+
+
+function logOut(){
+  //removeItemValue();
+  props.navigation.navigate('SignInScreen')
+}
+
+
+ 
   return (
     <Fragment>
     <SafeAreaView style={{ flex: 0, backgroundColor: '#069199' }} />
@@ -172,7 +207,7 @@ const CustomDrawer = (props) => {
           //resizeMode='contains'
           >
           <View style={{margin: 20,justifyContent:'center'}}>
-           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+           <TouchableOpacity style={{flexDirection:'row',justifyContent:'space-between'}} onPress={()=>logOut()}>
            <AntDesign name="arrowleft" size={20} color="#FFFFFF"   onPress={() => {
               props.navigation.closeDrawer();
             }}/>
@@ -187,7 +222,7 @@ const CustomDrawer = (props) => {
             }}>
             Logout
           </Text>
-            </View>  
+            </TouchableOpacity>  
         <View style={{justifyContent:'center',alignItems:'center'}}>    
           <Image
             source={ImageFilesData.profileImagedrawer}
@@ -200,7 +235,7 @@ const CustomDrawer = (props) => {
               fontFamily: 'Roboto-Medium',
               marginBottom: 5,
             }}>
-           Hello! Mohamed Feroz
+           Hello! {global.kddd}
           </Text>
           </View> 
           </View>

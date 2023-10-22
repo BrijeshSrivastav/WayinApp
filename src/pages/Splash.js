@@ -1,14 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {SafeAreaView,View,StyleSheet, Text,Image} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect} from 'react';
 import {ImageFilesData} from '../constants/images'
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-const Splash = ({navigation}) => {
+import {userNameD} from '../redux/useraction'
+import { useSelector, useDispatch } from 'react-redux'
+
+//import {homePageApi, usernam} from '../normalapi'
+
+const Splash =  ({navigation}) => {
+  //const dispatch = useDispatch()
+
+  
+
+  const getData = async () => {
+    try {
+
+      global.kddd = await AsyncStorage.getItem('user_name');
+
+      const value = await AsyncStorage.getItem('token');
+      //const user_name = await AsyncStorage.getItem('user_name');
+      //usernam = await AsyncStorage.getItem('user_name');
+      //alert(JSON.stringify(value));
+      //dispatch(userNameD(user_name));
+      if (value !== null) {
+        //usernam = user_name;
+        navigation.navigate('Parent');
+      }else{
+        navigation.navigate('SignInScreen');
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+
   useEffect(() => {
+    //getData();
     setTimeout(() => {
       //navigation.navigate('Parent');
-      navigation.navigate('SignInScreen');
+      //navigation.navigate('SignInScreen');
+      getData();
       
     }, 2000);
   }, []);

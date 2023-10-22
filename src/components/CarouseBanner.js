@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get('window');
 const carouselItem = require('../assets/carousel.json');
 const viewConfigRef = { viewAreaCoveragePercentThreshold: 95 };
 
-export default function CarouseBanner() {
+export default function CarouseBanner(props) {
     let flatListRef = useRef();
     const [currentIndex, setCurrentIndex] = useState(0);
   
@@ -32,7 +32,7 @@ export default function CarouseBanner() {
           onPress={() => console.log('clicked')}
           activeOpacity={1}
         >
-          <Image source={{ uri: item.url }} style={styles.image} />
+          <Image source={{ uri: "https://askwayin.com/assets/images/"+item.photo }} style={styles.image} />
           {/* <View style={styles.footer}>
             <Text style={styles.footerText}>{item.title}</Text>
             <Text style={styles.footerText}>{item.promo}</Text>
@@ -40,13 +40,15 @@ export default function CarouseBanner() {
         </TouchableOpacity>
       );
     };
-  
+  if(props.resdata===""){
+
+  }else{
     return (
       <View style={styles.container}>
        
   
         <FlatList
-          data={carouselItem}
+            data={props.bannerslider}
           renderItem={renderItems}
           keyExtractor={(item, index) => index.toString()}
           horizontal
@@ -76,22 +78,27 @@ export default function CarouseBanner() {
       </View>
     );
   }
+}
   
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      width:'98%',
+      // flex: 1,
       backgroundColor: '#fff',
     },
     carousel: {
-      maxHeight: 120,
+      width:'100%',
+      height: 120,
       borderRadius:12
     },
     image: {
-      width,
+      width:345,
       marginRight:10,
       height: 120,
-      borderRadius:12,
-      resizeMode: 'cover',
+      marginLeft:8,
+      marginRight:8,
+      borderRadius:8,
+      resizeMode: 'contain',
     },
     footer: {
       flexDirection: 'row',

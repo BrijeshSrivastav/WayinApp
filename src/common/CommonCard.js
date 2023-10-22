@@ -46,7 +46,8 @@ const CommonCard = ({
               marginLeft: 7,
               fontWeight: '600',
               color: '#000000',
-              fontSize: 12,
+              fontSize: 10,
+              width:100
             }}>
             {title}
           </Text>

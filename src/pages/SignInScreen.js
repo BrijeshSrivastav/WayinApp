@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { 
     View, 
     Text, 
@@ -7,7 +7,9 @@ import {
     Platform,
     StyleSheet ,
     StatusBar,
-    Alert
+    Alert,
+    ToastAndroid,
+    
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
@@ -16,11 +18,15 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import { useTheme } from 'react-native-paper';
 import {ImageFilesData} from '../constants/images'
-
-
-
+import {loginPost} from '../normalapi'
+import Loading from '../components/Loading';
+import { useSelector, useDispatch } from 'react-redux'
+import {getUserLogin,userNameD} from '../redux/useraction'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const SignInScreen = ({navigation}) => {
-
+    const [islodingres,setLoadingRes]=React.useState(false);
+    const [resdata,setResponseData]=React.useState('');
+    const dispatch = useDispatch()
     const [data, setData] = React.useState({
         username: '',
         password: '',
@@ -29,11 +35,8 @@ const SignInScreen = ({navigation}) => {
         isValidUser: true,
         isValidPassword: true,
     });
-
     const { colors } = useTheme();
-
     //const { signIn } = React.useContext(AuthContext);
-
     const textInputChange = (val) => {
         if( val.trim().length >= 4 ) {
             setData({
@@ -51,7 +54,6 @@ const SignInScreen = ({navigation}) => {
             });
         }
     }
-
     const handlePasswordChange = (val) => {
         if( val.trim().length >= 8 ) {
             setData({
@@ -74,7 +76,6 @@ const SignInScreen = ({navigation}) => {
             secureTextEntry: !data.secureTextEntry
         });
     }
-
     const handleValidUser = (val) => {
         if( val.trim().length >= 4 ) {
             setData({
@@ -88,29 +89,139 @@ const SignInScreen = ({navigation}) => {
             });
         }
     }
+    const notifyMessage=(msg)=> {
+        if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT);
+          //navigation.goBack();
+        } else {
+            Alert.alert(
+                //title
+                'Notification',
+                //body
+                msg,
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => {}
+                  },
+                ],
+                {cancelable: false},
+                //clicking out side of alert will not cancel
+              );
+            
+        }
+      }
+      
+      const notifyMessageRes=(msg)=> {
+        if (Platform.OS === 'android') {
+            navigation.navigate('Parent');
+            ToastAndroid.show(msg, ToastAndroid.SHORT);
+        } else {
+            Alert.alert(
+                //title
+                'Notification',
+                //body
+                msg,
+                [
+                  {
+                    text: 'OK',
+                    onPress: () =>  {navigation.navigate('Parent')}
+                  },
+                ],
+                {cancelable: false},
+                //clicking out side of alert will not cancel
+              );
+        }
+      }
+     const _storeData = async (name) => {
+        try {
+          await AsyncStorage.setItem(
+            'user_name',
+            name,
+          );
+        } catch (error) {
+          // Error saving data
+        }
+      };
+      const _storeDataEmail = async (email) => {
+        try {
+          await AsyncStorage.setItem(
+            'user_email',
+            email,
+          );
+        } catch (error) {
+          // Error saving data
+        }
+      };
+      const _storeDataToken = async (token) => {
+        try {
+          await AsyncStorage.setItem(
+            'token',
+            token,
+          );
+        } catch (error) {
+          // Error saving data
+        }
+      };
+      let userdata=useSelector((state)=>state.userReducer.userdata);
+      console.log(JSON.stringify(userdata));
+      useEffect(() => {
+      if(userdata!==""){
+        if(userdata.data.status === "success"){
+                 setLoadingRes(false);
+                 _storeData(userdata.data.name);
+                 dispatch(userNameD(userdata.data.name));
+                _storeDataEmail(userdata.data.email);
+                _storeDataToken(userdata.data.token);
+                navigation.navigate('Parent');
+              }else{
+                setLoadingRes(false);
+                notifyMessage("Invalid User!', 'Username or password is incorrect");
+              }  
+      }
+      }, [userdata,navigation,dispatch]);
+     // alert(JSON.stringify(userdata));
+    const loginHandle = async() => {
+        if ( data.username.length === 0 || data.password.length === 0 ) {
+            Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
+                { text: 'Okay' }
+            ]);
+            return;
+        }
 
-    // const loginHandle = (userName, password) => {
-
-    //     const foundUser = Users.filter( item => {
-    //         return userName == item.username && password == item.password;
-    //     } );
-
-    //     if ( data.username.length == 0 || data.password.length == 0 ) {
-    //         Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
-    //             {text: 'Okay'}
-    //         ]);
-    //         return;
-    //     }
-
-    //     if ( foundUser.length == 0 ) {
-    //         Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-    //             {text: 'Okay'}
-    //         ]);
-    //         return;
-    //     }
-    //    // signIn(foundUser);
-    // }
-
+        if (data.length === 0) {
+            Alert.alert('Invalid User!', 'Username or password is incorrect.', [
+                {text: 'Okay'}
+            ]);
+            return;
+        }
+         const param = {
+           "email":data.username,
+           "password":data.password
+            }
+            setLoadingRes(true);
+            dispatch(getUserLogin(param));
+        // await loginPost(param).then((res)=>{
+        //   if(res.status === "success"){
+        //     setLoadingRes(false);
+        //     //alert(res.name)
+        //     setResponseData(res);
+        //     _storeData(res.name);
+        //     _storeDataEmail(res.email);
+        //     _storeDataToken(res.token);
+        //     navigation.navigate('Parent')
+        //   }else{
+        //     setLoadingRes(false);
+        //     notifyMessage("Invalid User!', 'Username or password is incorrect");
+          
+        //     //alert("Something worng");
+        //   }  
+        // }).catch((error)=>{
+        //   setLoadingRes(false);  
+        //   notifyMessage("Something worng");
+        //   console.log(JSON.stringify(error));
+        // })
+    }
     return (
       <View style={styles.container}>
           <StatusBar backgroundColor='#204F90' barStyle="light-content"/>
@@ -123,7 +234,7 @@ const SignInScreen = ({navigation}) => {
              <Animatable.Image  
           animation="slideInRight"
           duraton="1000"    
-          style={styles.imagestyle} source={ImageFilesData.logo} />
+          style={styles.imagestyle} source={ImageFilesData.loginlogo} />
             </LinearGradient>
         <Animatable.View 
             animation="fadeInUpBig"
@@ -132,7 +243,7 @@ const SignInScreen = ({navigation}) => {
             }]}
         >
             <Text style={[styles.text_footer, {
-                color: colors.text
+                color: "#000000"
             }]}>Username</Text>
             <View style={styles.action}>
                 <FontAwesome 
@@ -144,7 +255,7 @@ const SignInScreen = ({navigation}) => {
                     placeholder="Your Username"
                     placeholderTextColor="#666666"
                     style={[styles.textInput, {
-                        color: colors.text
+                        color: '#000000'
                     }]}
                     autoCapitalize="none"
                     onChangeText={(val) => textInputChange(val)}
@@ -162,15 +273,15 @@ const SignInScreen = ({navigation}) => {
                 </Animatable.View>
                 : null}
             </View>
-            { data.isValidUser ? null : 
+            {/* { data.isValidUser ? null : 
             <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
             </Animatable.View>
-            }
+            } */}
             
 
             <Text style={[styles.text_footer, {
-                color: colors.text,
+                color: "#000000",
                 marginTop: 35
             }]}>Password</Text>
             <View style={styles.action}>
@@ -184,7 +295,7 @@ const SignInScreen = ({navigation}) => {
                     placeholderTextColor="#666666"
                     secureTextEntry={data.secureTextEntry ? true : false}
                     style={[styles.textInput, {
-                        color: colors.text
+                        color: '#000000'
                     }]}
                     autoCapitalize="none"
                     onChangeText={(val) => handlePasswordChange(val)}
@@ -207,21 +318,22 @@ const SignInScreen = ({navigation}) => {
                     }
                 </TouchableOpacity>
             </View>
-            { data.isValidPassword ? null : 
+            {/* { data.isValidPassword ? null : 
             <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
             </Animatable.View>
-            }
+            } */}
             
 
             <TouchableOpacity>
                 <Text style={{color: '#009387', marginTop:15}}>Forgot password?</Text>
             </TouchableOpacity>
             <View style={styles.button}>
-                <TouchableOpacity
+            {islodingres === true ? (<Loading />):
+                (<TouchableOpacity
                     style={styles.signIn}
-                   //onPress={() => {loginHandle( data.username, data.password )}}
-                   onPress={() => navigation.navigate('Parent')}
+                   onPress={() => {loginHandle()}}
+                   //onPress={() => navigation.navigate('Parent')}
                 >
                 <LinearGradient
                     colors={['#00A1A0', '#00A1A0']}
@@ -231,7 +343,7 @@ const SignInScreen = ({navigation}) => {
                         color:'#fff'
                     }]}>Sign In</Text>
                 </LinearGradient>
-                </TouchableOpacity>
+                </TouchableOpacity>)}
 
                 <TouchableOpacity
                     onPress={() => navigation.navigate('SignUpScreen')}
@@ -260,7 +372,8 @@ const styles = StyleSheet.create({
     },
     header: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
+        alignItems:'center',
         paddingHorizontal: 20,
         paddingBottom: 50,
         justifyContent:'center'
@@ -323,8 +436,8 @@ const styles = StyleSheet.create({
     },
     imagestyle: {
         alignItems:'center',
-        width:300,
-        height:130,
+        width:150,
+        height:65,
         marginTop:50,
         tintColor:'#FFF'
        },

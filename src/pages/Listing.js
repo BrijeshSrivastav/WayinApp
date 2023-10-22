@@ -20,6 +20,7 @@ import {
   Image,
   ImageBackground,
   FlatList,
+  Pressable,
   ActivityIndicator,
   ScrollView,
 
@@ -77,82 +78,33 @@ function Listing({navigation}) {
     Alert.alert('Click here for voice search ');
   }
   
-  let catList = useSelector((state)=>state.catReducer.catList);
+  let productList = useSelector((state)=>state.productReducer.productList);
+  //alert(JSON.productList);
   const RenderItemData = (props) => {
   return (
     <>
-    {/* <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', width:251, marginLeft:5, marginRight:5, backgroundColor:'#ffffff', borderColor:'#727272', borderWidth:0.5, borderRadius:5, paddingBottom:10, marginTop:20,margin:10}}>
-          <View style={{ borderTopLeftRadius:5, borderTopRightRadius:5,  }}>
-            <Image style={{width:250, height:130, borderTopLeftRadius:5, borderTopRightRadius:5,  }}
-            source={require('../../imgss/list_img.png')} />
-          </View>
-          <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft:15}}>
-            
-            <Text numberOfLines={2} style={{fontSize: 11, fontWeight: 'bold',color:'#E02932', marginTop:7}}>INDIAN RESTAURANTS</Text>
-            <Text numberOfLines={2} style={{fontSize: 10, fontWeight: 'bold',color:'#000000', marginTop:7}}>Desi Dhaba</Text>
-            
-            <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection:'row', marginTop:8}}>
-            <Icon 
-            style={{marginLeft:-3}}
-             type={Icons.Ionicons}
-              name={'location-outline'}
-              color={"#727272"}
-              size={13}
-            />
-              <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272', marginLeft:5}}>Desi Dhaba</Text>
-            </View>
-
-            <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection:'row', marginTop:8}}>
-            <Icon 
-            style={{marginLeft:-2}}
-             type={Icons.Ionicons}
-              name={'call-outline'}
-              color={"#727272"}
-              size={13}
-            />
-              <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272', marginLeft:5}}>+971 541234525</Text>
-            </View>
-
-            
-
-            <View style={{justifyContent: 'space-between', alignItems: 'stretch', flexDirection:'row', marginTop:20}}>
-            <View style={{backgroundColor:'#07A262', width:30, height:30,justifyContent: 'center', alignItems: 'center', borderRadius:3, }}>
-              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold', color:'#ffffff',}}>3</Text>
-            </View>
-            <Rating
-              type='custom'
-              //ratingImage={WATER_IMAGE}
-              ratingColor='#F7C310'
-              ratingBackgroundColor='#c8c7c8'
-              ratingCount={5}
-              imageSize={15}
-              onFinishRating={this.ratingCompleted}
-              style={{ paddingVertical: 10, marginLeft:10 }}
-            />
-            <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272', marginLeft:25, marginTop:10,}}>3 Week Ago</Text>
-            </View>
-
-          </View>
-        </View> */}
-    <TouchableOpacity style={{margin:5,width:(width/2)-10}} onPress={()=>navigation.navigate('details')}>   
-    <Card>
-    <Image style={{width:(width/2)-10, height:100, borderTopLeftRadius:5, borderTopRightRadius:5}}
-            source={require('../../imgss/list_img.png')} />
+    <Pressable style={{marginTop:12, justifyContent:'center'}} onPress={()=>navigation.navigate('details')}>   
+    <Card style={{width:'100%'}}>
+    {/* <Image style={{width:(width/2)-10, height:100, borderTopLeftRadius:5, borderTopRightRadius:5}} */}
+    <Image style={{height:130, borderTopLeftRadius:5, borderTopRightRadius:5}}
+              source={{
+                uri: 'https://askwayin.com/assets/images/'+props.itemData.photo,
+              }}  />
         
           <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft:15}}>
             
-            <Text numberOfLines={2} style={{fontSize: 11, fontWeight: 'bold',color:'#E02932', marginTop:7}}>INDIAN RESTAURANTS</Text>
-            <Text numberOfLines={2} style={{fontSize: 10, fontWeight: 'bold',color:'#000000', marginTop:7}}>Desi Dhaba</Text>
+            <Text numberOfLines={2} style={{fontSize: 11, fontWeight: 'bold',color:'#E02932', marginTop:7}}>{props.itemData.slug}</Text>
+            <Text numberOfLines={2} style={{fontSize: 10, fontWeight: 'bold',color:'#000000', marginTop:7}}>{props.itemData.name}</Text>
             
             <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection:'row', marginTop:8}}>
             <Icon 
-            style={{marginLeft:-3}}
-             type={Icons.Ionicons}
+              style={{marginLeft:-3}}
+              type={Icons.Ionicons}
               name={'location-outline'}
               color={"#727272"}
               size={13}
             />
-              <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272', marginLeft:5}}>Desi Dhaba</Text>
+              <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272', marginLeft:5}}>{props.itemData.real_address}</Text>
             </View>
 
             <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection:'row', marginTop:8}}>
@@ -163,15 +115,15 @@ function Listing({navigation}) {
               color={"#727272"}
               size={13}
             />
-              <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272', marginLeft:5}}>+971 541234525</Text>
+              <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272', marginLeft:5}}>{props.itemData.phone_number}</Text>
             </View>
 
             <View style={{backgroundColor:'#B8B8B8', width:"100%",marginTop:25,borderWidth:0.2,borderStyle:'dotted',marginLeft:-5}}>
             </View>
 
-            <View style={{justifyContent: 'space-between', alignItems: 'stretch', flexDirection:'row', marginTop:10,marginBottom:10}}>
-            <View style={{backgroundColor:'#07A262', width:30, height:30,justifyContent: 'center', alignItems: 'center', borderRadius:3, }}>
-              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold', color:'#ffffff',}}>3</Text>
+            {/* <View style={{width:'100%', justifyContent:'flex-start',flexDirection:'row', marginTop:10,marginBottom:10, backgroundColor:'#ff0000'}}>
+            <View style={{backgroundColor:'#07A262', width:30, height:30,justifyContent: 'space-between', alignItems: 'center', borderRadius:3, }}>
+              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold', color:'#ffffff',}}>{props.itemData.phone_number}</Text>
             </View>
             <Rating
               type='custom'
@@ -183,18 +135,50 @@ function Listing({navigation}) {
               onFinishRating={this.ratingCompleted}
               style={{ paddingVertical: 10, marginLeft:5 }}
             />
-            <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272',marginLeft:7, marginTop:10,}}>3 Week Ago</Text>
+            <View style={{ justifyContent:'flex-end'}}>
+            <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#ffffff',marginLeft:7, }}>3 Week Ago</Text>
             </View>
+            </View> */}
+
+
+
+            <View style={{flex:1, height:50, width:'100%',flexDirection:'row', borderRadius:12}}>
+              <View style={{flex:.5}}>
+              <View style={{width:'100%', justifyContent:'flex-start',flexDirection:'row', marginTop:10,marginBottom:10, }}>
+              <View style={{backgroundColor:'#07A262', width:40, height:30,justifyContent: 'center', alignItems: 'center', borderRadius:3, }}>
+              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold', color:'#ffffff',}}>4.0</Text>
+            </View>
+            <Rating
+              type='custom'
+              //ratingImage={WATER_IMAGE}
+              ratingColor='#F7C310'
+              ratingBackgroundColor='#c8c7c8'
+              ratingCount={5}
+              imageSize={12}
+              onFinishRating={this.ratingCompleted}
+              style={{ paddingVertical: 10, marginLeft:5 }}
+            />
+              </View>
+              </View>
+              <View style={{flex:.5, justifyContent:'center', paddingRight:10}}>
+              <View style={{ justifyContent:'flex-end', alignItems:'flex-end'}}>
+            <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#000000',marginLeft:7, }}>3 Week Ago</Text>
+            </View>
+              </View>
+            
+            </View>
+
+
             </View>
           
   </Card>
-  </TouchableOpacity> 
+  </Pressable> 
    
     </>
   );
 };
-
-if (catList === ''){
+//alert(JSON.stringify(productList))
+if (productList === ''){
 // eslint-disable-next-line react/self-closing-comp
 return (<Loading sizes="small" colors="#0000ff"></Loading>);
 } else {
@@ -215,11 +199,11 @@ return (<Loading sizes="small" colors="#0000ff"></Loading>);
      <CategoryFilter color={"#FFF"}/>    
   <View>
      <FlatList
-        data={catList.data.allcategories}
-        renderItem={({item}) => <RenderItemData itemData={item} />}
+        data={productList.data.allproduct}
+        renderItem={({item}) => <RenderItemData itemData={item} navigation={navigation}/>}
         keyExtractor={item => item.id}
-        numColumns={2}
-        contentContainerStyle={{ paddingBottom: 100,paddingRight:20}}
+        numColumns={1}
+        contentContainerStyle={{ paddingBottom: 100,paddingRight:15, paddingLeft:15}}
       />
       </View>
           

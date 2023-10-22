@@ -192,11 +192,13 @@ const styles = StyleSheet.create({
   texttyleactive: {
     fontSize: 8,
     marginTop:5,
-    color:'#000'
+    color:'#000',
+    width:40
   },
   texttyleInactive: {
     fontSize: 10,
     marginTop:5,
-    color:'#000'
+    color:'#000',
+    width:40,
   },
 });

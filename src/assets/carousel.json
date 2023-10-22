@@ -1,17 +1,22 @@
 [
   {
+    "id": "1",
     "title": "Yellow shoe",
     "promo": "50% off",
     "url": "https://img.freepik.com/free-vector/flat-design-sale-background_23-2149066483.jpg?w=740&t=st=1695827857~exp=1695828457~hmac=3430d82958884e69c36deca7f615804bd04304e3a248f5968b8f086f046c80de"
   },
   {
+    "id": "2",
     "title": "Black shades",
     "promo": "10% off",
     "url": "https://img.freepik.com/free-psd/super-sale-banner_1393-365.jpg?1&w=740&t=st=1695827925~exp=1695828525~hmac=4922cf01bf827e6e5a2dc76f4990a3757447cf81210be1449c7ab01b6973bc28"
   },
   {
+    "id": "3",
     "title": "Red shoe",
-    "promo": "20% off",
+    "description": "20% off",
     "url": "https://img.freepik.com/free-vector/mega-sale-banner-blue-yellow-colors_1017-32176.jpg?w=826&t=st=1695828006~exp=1695828606~hmac=4d0348a87a8bd5a37a2417188f9e3a8c7980ddd084b24ceded4bc7be1faaf88b"
   }
 ]
+
+       

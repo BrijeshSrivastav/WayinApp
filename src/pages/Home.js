@@ -20,76 +20,112 @@ import {
   ImageBackground,
   FlatList,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  
   
 } from 'react-native';
 //import { ScrollView } from 'react-native-virtualized-view'
 import SvgUri from 'react-native-svg-uri';
 //import { SvgUri } from 'react-native-svg';
 
+import Carousel from '../components/Carousel'
+const carouselItem = require('../assets/carousel.json');
+//import { dummyData } from '../data/Data'
+
 import { ImageSlider } from "react-native-image-slider-banner";
 import Header from '../components/Header';
 import Icon, {Icons} from '../components/Icons';
 import CarouseBanner from '../components/CarouseBanner'
-import {homePageApi} from '../normalapi'
+import {homePageApi, usernam} from '../normalapi'
 import { useSelector, useDispatch } from 'react-redux'
-import {getCatList} from '../redux/categoryaction'
+import {getCatList,getSubCatList,setUserName} from '../redux/categoryaction'
 import Loading from '../components/Loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native'
 function Home({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch()
   const [islodinghome,setLoadingHome]=useState(false);
+  const [islodingimage,setLoadingImage]=useState(false);
   const [resdata,setResponseData]=useState('');
+  const [bannerData,setBnnerData]=useState('');
+  
   const getData=async ()=>{
     //setLoadingHome(false)
     await homePageApi().then((res)=>{
      setResponseData(res);
+     setBnnerData(res.bannerslider);
      setLoadingHome(true);
     }).catch((error)=>{
       setLoadingHome(true);
       console.log(error);
     })
   }
+
+  const _retrieveData = async () => {
+   // alert("ddddd")
+    try {
+      const value = await AsyncStorage.getItem('token');
+      //alert(value);
+      if (value !== null) {
+        // We have data!!
+        dispatch(setUserName(value));
+        console.log(value);
+
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
   useEffect(() => {
     getData();
+
+    //Alert.alert('Click here ------ '+ global.kddd);
+
+   //_retrieveData();
     LogBox.ignoreLogs(["VirtualizedLists should never be nested","Each child in a list should have a unique key prop"]);
     //LogBox.ignoreLogs(["Each child in a list should have a unique key prop"]);
   }, []);
  
-  // let userList=useSelector((state)=>state.catReducer.userList);
-  // let isloding=useSelector((state)=>state.userReducer.isloding);
+  
   // useEffect(() => {
-  //   //Runs only on the first render
-  //   dispatch(getUserList(true));
-  // },[dispatch]);
-  //alert(JSON.stringify(userList));
-
+  //  _//retrieveData();
+  // });
   function aaa(){
     //Alert.alert('Click here for voice search ');
     //navigation.navigate('listing')
 
-    navigation.navigate('details')
+    navigation.navigate('SignInScreen')
+  }
+  function onLoadingImg(value,lable){
+    setLoadingImage(value,lable)
   }
   let isloding=useSelector((state)=>state.catReducer.isloding);
+  //_retrieveData();
   const RenderItemData = (props) => {
   return(
     <>
     
     <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center'}}>
-    <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
+    <TouchableOpacity style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}
+     onPress={()=>{
+      dispatch(getSubCatList(props.itemData.slug))
+      navigation.navigate('subcategory')
+      }}
+    >
       <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
         source={{
           uri: 'https://askwayin.com/assets/images/'+props.itemData.photo,
-        }} />
-      </View>
+        }} 
+       
+        />
+      </TouchableOpacity>
       <Text numberOfLines={2} style={{fontSize: 12, height:50, fontWeight: 'bold',color:'#000000', marginTop:5}}>{props.itemData.title}</Text>
     </View>
     {props.arr === 6 &&
     (
       <TouchableOpacity style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center'}} 
       onPress={()=>{
-        dispatch(getCatList(''))
         navigation.navigate('category')
         }}>
      {isloding===true ? (<ActivityIndicator  />):
@@ -107,7 +143,7 @@ function Home({navigation}) {
   )
 };
   
-if(resdata==""){
+if(resdata===""){
 return(<Loading sizes="small" colors="#0000ff"></Loading>)
 }else{
   return (
@@ -136,7 +172,7 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
             <TextInput 
                   placeholder="Discover Endless Possibilties" 
                   placeholderTextColor="#A0A0A0"
-                  style={{backgroundColor:'#F3F2F2', flex:1,}}
+                  style={{backgroundColor:'#F3F2F2', flex:1,color: "#000000"}}
               />
 
               <View style={{padding:6}}> 
@@ -157,8 +193,17 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
             </View>
           </View>
           <View style={{padding:5, borderRadius:15}}>
-          <CarouseBanner />
+
+       
+          {bannerData === "" ? (<Loading />):
+          (<View>
+            <Carousel data = {bannerData}/>
+        </View>)}
           
+         
+          {/* <View>
+            <CarouseBanner data = {bannerData}/>
+        </View>  */}
           </View>
 
          
@@ -166,15 +211,15 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
           {/* https://github.com/meliorence/react-native-snap-carousel/issues/138 */}
           
           <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'center', alignItems: 'center', marginTop: 8}}>
-            <View style={{ flex: 0.50, justifyContent: 'flex-start', alignItems: 'baseline', height:50, }}>
-              <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:5}}>Explore Wayin</Text>
-              <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'normal',color:'#000000', marginTop:3}}>Discover the categories</Text>
+            <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'baseline', height:50, }}>
+              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:5,}}>Explore Wayin</Text>
+              <Text numberOfLines={1} style={{fontSize: 12, fontWeight: 'normal',color:'#000000', marginTop:3,height:20}}>Discover the categories</Text>
             </View>
-            <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-end', alignItems: 'flex-end',  }}>
+            {/* <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-end', alignItems: 'flex-end',  }}>
               <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', }}>View all</Text>
               <Image style={{width:12, height:12, borderRadius: 2, marginLeft:5, marginBottom:2, }}
                 source={require('../../imgss/arrow.png')} />
-            </View>
+            </View> */}
           </View>
 
     <View>
@@ -214,26 +259,26 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
           </ScrollView>
         </View>
 
-        <View style={{marginTop:0, paddingTop:30, backgroundColor:'#ffffff'}}>
+        <View style={{marginTop:0, paddingTop:30, backgroundColor:'#E8F5F6'}}>
           <ImageBackground 
-            source={require('../../imgss/images.jpg')}
+            // source={require('../../imgss/images.jpg')}
             style={{ 
               width: 'auto',
               marginTop:0,
-              paddingTop:40,
-              height: 360,
+              paddingTop:1,
+              height: 260,
               }}
           >
 
-            <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'center', alignItems: 'center', marginTop: 8}}>
+            <View style={{ flexDirection: 'row', paddingLeft: 10, paddingRight:10, justifyContent: 'center', alignItems: 'center', marginTop: 1}}>
               <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-start', alignItems: 'flex-start', }}>
-                <Image style={{width:25, height:34, borderRadius: 2, tintColor:'#ffffff', marginRight:15,  }}
+                <Image style={{width:25, height:34, borderRadius: 2, tintColor:'#000000', marginRight:15,  }}
                   source={require('../../imgss/log_new.png')} />
-                <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#ffffff', marginTop:8}}>Popular Category</Text>
+                <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:8}}>Popular Category</Text>
               </View>
               <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-end', alignItems: 'flex-end',  }}>
-                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#ffffff', }}>View all</Text>
-                <Image style={{width:12, height:12, borderRadius: 2, tintColor:'#ffffff', marginLeft:5, marginBottom:2, }}
+                <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', }}>View all</Text>
+                <Image style={{width:12, height:12, borderRadius: 2, tintColor:'#000000', marginLeft:5, marginBottom:2, }}
                   source={require('../../imgss/arrow.png')} />
               </View>
             </View>
@@ -248,11 +293,17 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
                  {resdata.popularcat.map((item, index) => {
               return(
               <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}} key={item.id}>
-                <Image style={{width:120, height:140, borderRadius: 12}}
-                  source={{
-                    uri: 'https://askwayin.com/assets/images/'+item.photo1,
-                  }} />
-                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:10}}>{item.title}</Text>
+                
+                {item.photo1===""?
+                  (<Image style={{width:120, height:140, borderRadius: 12, marginLeft:6 }}
+                  source={require('../../imgss/noimg.png')} />)
+                  :(<Image style={{width:120, height:140, borderRadius: 12, marginLeft:6}}
+                    source={{
+                      uri: 'https://askwayin.com/assets/images/'+item.photo1,
+                    }} 
+                    
+                    />)}
+                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#000000', marginTop:10}}>{item.title}</Text>
               </View>
                  );
                 })}

@@ -1,6 +1,6 @@
 export const ImageFilesData = {
     logo: require("../assets/images/wiyanwhite.png"),
-    loginlogo: require("../assets/images/loginlogo.png"),
+    loginlogo: require("../assets/images/logologin.png"),
     drawerbackground:require("../assets/images/menu-bg.png"),
     profileImagedrawer:require('../assets/images/user-profile.jpg'),
     headerlogo:require('../assets/images/headerlog.png'),

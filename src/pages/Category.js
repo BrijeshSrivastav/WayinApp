@@ -1,11 +1,13 @@
 import {View, Text, FlatList, Dimensions, TouchableOpacity,SafeAreaView,StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Categoriesheader from '../components/Categoriesheader';
 const {height, width} = Dimensions.get('window');
 import CategoryItem from '../components/CategoryItem';
 import { ImageFilesData } from '../constants/images';
 import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../components/Loading';
+
+import {getCatList,getSubCatList} from '../redux/categoryaction'
 export default function Category({navigation}) {
   const DATA = [
     {
@@ -44,11 +46,16 @@ export default function Category({navigation}) {
       cat_img:ImageFilesData.loudspeaker
     },
   ];
-    let catList = useSelector((state)=>state.catReducer.catList);
-   //alert(JSON.stringify(catList));
-   //alert(catList.data.allcategories);
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getCatList(''))
+  }, [dispatch]);
+ 
+let catList = useSelector((state)=>state.catReducer.catList);
+   
+
  if(catList === ""){
-  <Loading  sizes="small" colors="#0000ff"></Loading>
+  return (<Loading sizes="small" colors="#0000ff"></Loading>);
  }else{
   return (
     <SafeAreaView style={styles.container}>
@@ -74,6 +81,7 @@ const styles = StyleSheet.create({
   },
   
   listviewM:{
-    marginTop:60
+    marginTop:60,
+    marginBottom:160
   }
 });

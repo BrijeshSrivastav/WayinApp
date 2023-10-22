@@ -1,8 +1,8 @@
  import axios from 'axios';
+ import { BASE_URL_ENV, ASSETS_DIR } from '@env';
  export const homePageApi=async()=>{
-   //alert(`${process.env.BASE_URL_ENV}"home"`)
 return new Promise(async(resolve, reject)=>{
- await axios.get("https://askwayin.com/api/home").then(function ({data}){
+ await axios.get(`${BASE_URL_ENV}home`).then(function ({data}){
      console.log(data, 'data');
        resolve(data);
     }).catch(function (error){
@@ -11,10 +11,31 @@ return new Promise(async(resolve, reject)=>{
   });
  }
 
+ export var usernam = "";
+
+ export const registerPost=async(param)=>{
+   //alert(`${process.env.BASE_URL_ENV}"home"`)
+return new Promise(async(resolve, reject)=>{
+ await axios.post(`${BASE_URL_ENV}user/registerapi`,param).then(function ({data}){
+     console.log(data, 'data');
+     //alert(JSON.stringify(data));
+       resolve(data);
+    }).catch(function (error){
+       reject(error);
+    });
+  });
+ }
  
- //    await axios.get(url).then(res)=>{
-    //     resolve(res);
-    //    }
-    //   }).catch((error)=>{
-    //     reject(error)
-    //   });
+
+ export const loginPost=async(param)=>{
+   //alert(`${process.env.BASE_URL_ENV}"home"`)
+return new Promise(async(resolve, reject)=>{
+ await axios.post(`${BASE_URL_ENV}user/login`,param).then(function ({data}){
+     console.log(data, 'data');
+     //alert(JSON.stringify(data));
+       resolve(data);
+    }).catch(function (error){
+       reject(error);
+    });
+  });
+ }

@@ -40,7 +40,8 @@ const Categoriesheader=(props)=>{
             />
            <TextInput 
                 placeholder="Search here..." 
-                style={{backgroundColor:'#FFF', flex:1}}
+                placeholderTextColor={"#000000"}
+                style={{backgroundColor:'#FFF', flex:1, color:'#000000'}}
             />
             <TouchableOpacity >
             <Image
