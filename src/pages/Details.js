@@ -42,11 +42,13 @@ import { LogBox } from 'react-native';
 import { Dimensions } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Detailheader from '../components/Detailheader';
-
+import ImageView from "react-native-image-viewing";
+import Gallery from 'react-native-image-gallery';
 
 function Details({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
+  const [visible, setIsVisible] = useState(false);
   let isloding = useSelector((state)=>state.productReducer.isloding);
   let productDetail = useSelector((state)=>state.productReducer.productDetail);
 
@@ -62,6 +64,7 @@ function Details({navigation}) {
     Linking.openURL(phoneNumber);
  }
 
+ 
  //const result = Object.keys(productDetail.data.schedules).map(key => ({[key]: productDetail.data.schedules[key]}));
 
 if (productDetail === ''){
@@ -116,24 +119,41 @@ if (productDetail === ''){
             </View>
             <View>
 
-        {/* { productDetail.data.galleries.length == 0 ? "" : */}
+            {/* <Gallery
+        style={{ flex: 1 }}
+        images={[
+          { source: {uri: 'https://images.unsplash.com/photo-1571501679680-de32f1e7aad4'}, dimensions: { width: 150, height: 150 } },
+          { source: { uri: 'http://i.imgur.com/XP2BE7q.jpghttps://images.unsplash.com/photo-1571501679680-de32f1e7aad4' } },
+          { source: { uri: 'http://i.imgur.com/5nltiUd.jpghttps://images.unsplash.com/photo-1571501679680-de32f1e7aad4' } },
+          { source: { uri: 'http://i.imgur.com/6vOahbP.jpghttps://images.unsplash.com/photo-1571501679680-de32f1e7aad4' } },
+          { source: { uri: 'http://i.imgur.com/kj5VXtG.jpghttps://images.unsplash.com/photo-1571501679680-de32f1e7aad4' } }
+        ]}
+      /> */}
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           nestedScrollEnabled={true} 
           >
+          
             {productDetail.data.galleries.map((item, index) => {
             return(
-          <View style={{justifyContent: 'center', alignItems: 'center', padding:5}}  key={item.id}>
-          <ImageBackground style={{width:120, height:140}}
+          <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', padding:5}}  key={item.id} onPress={()=>
+           {
+            global.arr="https://askwayin.com/assets/images/"+item.photo
+            navigation.navigate("ImageViewerData");
+          }
+           
+          }
+          >
+    <ImageBackground style={{width:120, height:140}}
               imageStyle={{ borderRadius: 12}}
+             
               source={{
                 uri: 'https://askwayin.com/assets/images/'+item.photo,
               }} >
-              {/* <Text numberOfLines={1} style={{fontSize: 12, fontWeight: 'bold', color:'#FFF',paddingTop:15,paddingLeft:10,paddingRight:15}}>{item.title} </Text>
-              <Text  style={{fontSize: 11, width:55,fontWeight: 'normal', color:'#FFF',paddingLeft:10,height:50}}>{item.subtitle}</Text> */}
+             
           </ImageBackground>
-          </View>
+          </TouchableOpacity>
             );
           })}
           </ScrollView>
@@ -300,7 +320,7 @@ if (productDetail === ''){
                     <Text  style={{fontSize: 11, width:55,fontWeight: 'normal', color:'#FFF',paddingLeft:10,height:50}}>{item.subtitle}</Text> */}
                 </ImageBackground>
               </View>
-
+ 
               <FlatList style={{}}
                   data={productDetail.data.schedules}
                   keyExtractor={(item, index) => item.key}
@@ -321,6 +341,17 @@ if (productDetail === ''){
                 paddingBottom:10, marginTop:10, paddingTop:12,  paddingLeft:12, paddingRight:12
               }}>
               <Text style={{fontSize: 15, fontWeight: 'bold', color:'#000', width:width-10,marginBottom:5}}>Frequently Asked Questions </Text>
+              <FlatList style={{}}
+                  data={productDetail.data.Faqs}
+                  keyExtractor={(item, index) => item.key}
+                  numColumns={3}
+                  renderItem={({ item, index }) => (
+                    <View style={{flexDirection:'row', width:"33%",height:25, marginTop:10, backgroundColor:'#ffffff', }}>
+                        <Text>{item.faq_name}</Text>
+                    </View>
+
+                  )}/>
+              
             </View>
 
             <View

@@ -44,6 +44,7 @@ import CategoryFilter from '../components/CategoryFilter';
 import Header_with_Back from '../components/Header_with_Back';
 import { Dimensions } from 'react-native'
 import {getProductDetail} from '../redux/productaction';
+import Header_listing from '../components/Header_listing';
 
 function Listing({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
@@ -240,22 +241,28 @@ return (<Loading sizes="small" colors="#0000ff"></Loading>);
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         //backgroundColor={backgroundStyle.backgroundColor}
       />
-      <Header_with_Back navigation={navigation}/>
+      <Header_listing navigation={navigation}/>
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
+        //contentInsetAdjustmentBehavior="automatic"
         nestedScrollEnabled={true}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{width:width , ackgroundColor:'#fff'}}
          >
      <CategoryFilter color={"#FFF"}/>    
-  <View>
-     <FlatList
+     <View>
+     {productList.data.status===false ? (
+       <View style={{width:width,height:height-150,justifyContent:'center',alignItems:'center'}}>
+       <Text style={{fontWeight:'bold'}}> ho! Sorry No Records Found..</Text>
+     </View>
+     ):
+     (
+  <FlatList
         data={productList.data.lishting}
         renderItem={({item}) => <RenderItemData itemData={item} navigation={navigation} close_open={productList.data.OpenCloseTime} is_featuredd={productList.data.is_feature}/>}
         keyExtractor={item => item.id}
         numColumns={1}
         contentContainerStyle={{ paddingBottom: 100,paddingRight:15, paddingLeft:15}}
-      />
+      />)}
       </View>
           
          </ScrollView>

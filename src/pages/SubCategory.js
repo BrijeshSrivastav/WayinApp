@@ -91,15 +91,14 @@ export default function SubCategory({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
      <SubCategoryheader navigation={navigation}/>
-     {subcatList.data.status !== false && 
-     (<View style={{height:130,width:'100%',borderRadius:10, paddingLeft:12, paddingRight:12}}>
+    <View style={{height:130,width:'100%',borderRadius:10, paddingLeft:12, paddingRight:12}}>
       <Image
       //source={{uri: 'https://askwayin.com/assets/images/XAM3Bm1y1693033069.jpg'}}
       source={{uri: 'https://askwayin.com/assets/images/'+subcatList.data.SubCatBanner}}
       style={{height:110,width:'100%',borderRadius:10, }}
     />
     
-  </View>)}
+  </View>
 
   {/* 
   <View style={{height:300,width:'100%',borderRadius:20, paddingLeft:5, paddingRight:5, backgroundColor:"#000000"}}>

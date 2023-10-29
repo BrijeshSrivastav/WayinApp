@@ -18,6 +18,7 @@ const SubCategoryItem=(props)=>{
       onPress={()=>{
             dispatch(getProductList(props.itemData.slug));
             props.navigation.navigate('listing');
+            global.catnam="";
             global.catnam =props.itemData.title;
             }}>  
         <View style={{justifyContent:'center',alignItems:'center'}}>

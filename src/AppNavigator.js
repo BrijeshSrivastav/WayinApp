@@ -10,6 +10,7 @@ import SignUpScreen from './pages/SignUpScreen';
 
 import Listing from './pages/Listing';
 import Details from './pages/Details';
+import ImageViewerData from './pages/ImageViewerData';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,11 @@ const AppNavigator = () => {
           options={{headerShown: false}}
         />
 
+<Stack.Screen
+          name="ImageViewerData"
+          component={ImageViewerData}
+          options={{headerShown: false}}
+        />
 
       </Stack.Navigator>
     </NavigationContainer>

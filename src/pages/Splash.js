@@ -18,8 +18,8 @@ const Splash =  ({navigation}) => {
   const getData = async () => {
     try {
 
+      global.kddd="";
       global.kddd = await AsyncStorage.getItem('user_name');
-
       const value = await AsyncStorage.getItem('token');
       //const user_name = await AsyncStorage.getItem('user_name');
       //usernam = await AsyncStorage.getItem('user_name');
