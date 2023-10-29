@@ -45,6 +45,9 @@ import Detailheader from '../components/Detailheader';
 import ImageView from "react-native-image-viewing";
 import Gallery from 'react-native-image-gallery';
 
+import RBSheet from "react-native-raw-bottom-sheet";
+import PostReview  from '../components/PostReview';
+
 function Details({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
@@ -258,7 +261,7 @@ if (productDetail === ''){
                
     
                 </View>
-                <Rating
+            <Rating
               type='custom'
               //ratingImage={WATER_IMAGE}
               ratingColor='#F7C310'
@@ -362,14 +365,20 @@ if (productDetail === ''){
                 margin:8, borderRadius:8,
                 paddingBottom:10, marginTop:10, paddingTop:12,  paddingLeft:12, paddingRight:12
               }}>
-              <Text style={{fontSize: 15, fontWeight: 'bold', color:'#000', width:width-10,marginBottom:5}}>Recommended Reviews </Text>
+                <View style={{flexDirection:'row', width:'100%',justifyContent:'space-between'}}>
+                  <Text style={{fontSize: 15, fontWeight: 'bold', color:'#000', width:200,marginBottom:5}}>Recommended Reviews </Text>
+                  <TouchableOpacity style={{ height:30,width:70,borderRadius:5,backgroundColor:'red',alignItems:'center',justifyContent:'center'}}  onPress={() => this.RBSheet.open()}>
+                  <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'bold',color:'#ffffff',alignItems:'center'}}>Post Review</Text>
+                  </TouchableOpacity>
+                </View>
+             
               {productDetail.data.Review.data.map((item, index) => {
               return(
             <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', padding:5}}  key={item.id}>
                 {/* <Text  style={{fontSize: 11, fontWeight: 'normal', color:'#000000',paddingLeft:10,height:50}}>{item.name +"  "+ item.created_at}</Text>  */}
                 <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft:15}}>
             
-            <Text numberOfLines={2} style={{fontSize: 11, fontWeight: 'bold',color:'#000000', marginTop:7}}>{item.name +"  "+ item.created_at}</Text>
+            <Text numberOfLines={2} style={{fontSize: 11, fontWeight: 'bold',color:'#000000', marginTop:7}}>{item.name +"  "+new Date(item.created_at).toDateString()}</Text>
             {/* <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:7}}>{item.created_at}</Text> */}
             
             <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection:'row', marginTop:8}}>
@@ -397,6 +406,27 @@ if (productDetail === ''){
               style={{
                 paddingBottom:25, marginBottom:250, paddingTop:12,  paddingLeft:12, paddingRight:12
               }}></View>
+
+<View style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopEndRadius:5,borderTopLeftRadius:5}}>
+        {/* <Button title="OPEN BOTTOM SHEET" onPress={() => this.RBSheet.open()} /> */}
+        <RBSheet
+          ref={ref => {
+            this.RBSheet = ref;
+          }}
+          height={500}
+          openDuration={250}
+          customStyles={{
+            container: {
+              justifyContent: "center",
+              alignItems: "center",
+              borderTopRightRadius:15,
+              borderTopLeftRadius:15
+            }
+          }}
+        >
+          <PostReview/>
+        </RBSheet>
+      </View>
 
           </ScrollView>
          

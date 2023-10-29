@@ -57,7 +57,7 @@ const Detailheader=(props)=>{
             }}
             />
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginRight:5}}>
+            {/* <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginRight:5}}>
             <Icon
             type={Icons.EvilIcons}
             name="search"
@@ -67,14 +67,13 @@ const Detailheader=(props)=>{
                 color:'#000'
             }}
             />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               style={{paddingLeft:12,marginTop:30 }}
               nestedScrollEnabled={true} 
-             
               >
             {props.resdata.data.galleries.map((item, index) => {
               return(
@@ -90,7 +89,6 @@ const Detailheader=(props)=>{
             
               </ScrollView>
           </View>
-         
        </View>       
            
         )
