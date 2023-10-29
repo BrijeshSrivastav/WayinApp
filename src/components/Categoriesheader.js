@@ -51,7 +51,7 @@ const Categoriesheader=(props)=>{
           </View>
         </View>
           </ImageBackground>
-          <CategoryFilter color={"#FFF"}/>
+          {/* <CategoryFilter color={"#FFF"}/> */}
        </View>       
            
         )
@@ -60,11 +60,11 @@ const Categoriesheader=(props)=>{
 
 const styles = StyleSheet.create({
     container: {
-     height:240
+     height:230
     },
     locationview:{
       flexDirection:'row',  
-      marginTop:10
+      marginTop:5
     }
   });
   

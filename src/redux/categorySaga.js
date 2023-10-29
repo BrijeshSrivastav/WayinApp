@@ -24,7 +24,7 @@ function* fetchCat(action) {
 
 function* fetchSubCat(action) {
   //alert(`${BASE_URL_ENV}allsubcategoryapi/${action.payload}`)
-  //console.log(`${BASE_URL_ENV}allsubcategoryapi/${action.payload}`);
+  console.log(`${BASE_URL_ENV}allsubcategoryapi/${action.payload}`);
   try {
     //alert("www");
     const user = yield axios.get(`${BASE_URL_ENV}allsubcategoryapi/${action.payload}`);

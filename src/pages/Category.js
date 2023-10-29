@@ -66,7 +66,7 @@ let catList = useSelector((state)=>state.catReducer.catList);
         renderItem={({item}) => <CategoryItem itemData={item} navigation={navigation}/>}
         keyExtractor={item => item.id}
         numColumns={4}
-        contentContainerStyle={{ paddingBottom: 100}}
+        contentContainerStyle={{ paddingBottom: 40}}
       />
       </View>
     </SafeAreaView>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   
   listviewM:{
-    marginTop:60,
-    marginBottom:160
+    marginTop:20,
+    marginBottom:250
   }
 });

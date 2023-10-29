@@ -21,7 +21,7 @@ import {
   FlatList,
   ActivityIndicator,
   ScrollView,
-  
+  BackHandler
   
 } from 'react-native';
 //import { ScrollView } from 'react-native-virtualized-view'
@@ -78,19 +78,33 @@ function Home({navigation}) {
     }
   };
   useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Notification!", "Are you sure you want to close?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  useEffect(() => {
     getData();
-
-    //Alert.alert('Click here ------ '+ global.kddd);
-
-   //_retrieveData();
     LogBox.ignoreLogs(["VirtualizedLists should never be nested","Each child in a list should have a unique key prop"]);
     //LogBox.ignoreLogs(["Each child in a list should have a unique key prop"]);
   }, []);
  
-  
-  // useEffect(() => {
-  //  _//retrieveData();
-  // });
+ 
   function aaa(){
     //Alert.alert('Click here for voice search ');
     //navigation.navigate('listing')
@@ -202,7 +216,7 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
           
          
           {/* <View>
-            <CarouseBanner data = {bannerData}/>
+            <CarouseBanner bannerData = {bannerData}/>
         </View>  */}
           </View>
 
@@ -272,7 +286,7 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
 
             <View style={{ flexDirection: 'row', paddingLeft: 10, paddingRight:10, justifyContent: 'center', alignItems: 'center', marginTop: 1}}>
               <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-start', alignItems: 'flex-start', }}>
-                <Image style={{width:25, height:34, borderRadius: 2, tintColor:'#000000', marginRight:15,  }}
+                <Image style={{width:25, height:34, borderRadius: 2, tintColor:'#1C5791', marginRight:15,  }}
                   source={require('../../imgss/log_new.png')} />
                 <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:8}}>Popular Category</Text>
               </View>
@@ -373,10 +387,10 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
           </View>
 
 
-          <View style={{marginTop:0, paddingTop:5, paddingBottom:15, paddingRight:12, backgroundColor:'#fff'}}>
+          <View style={{marginTop:0, paddingTop:5, paddingBottom:15, backgroundColor:'#f2f2f2'}}>
             <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 10}}>
               <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-start', alignItems: 'flex-start', }}>
-                <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:8}}>Popular Brand</Text>
+                <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:8}}>Popular Brands</Text>
               </View>
               <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-end', alignItems: 'flex-end',  }}>
               <Image style={{width:12, height:12, borderRadius: 2, tintColor:'#000000', marginLeft:5, marginBottom:2, }}
@@ -387,18 +401,27 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
               <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
-              style={{paddingLeft:12, }}
+              style={{ backgroundColor:'#f2f2f2'}}
               nestedScrollEnabled={true} 
              
               >
             {resdata.partners.map((item, index) => {
               return(
-               <View style={{ justifyContent: 'center', alignItems: 'center', padding:5, }} key={item.id}>
-                <Image style={{width:180, height:45, borderRadius: 12}}
+               <View style={{ justifyContent: 'center', alignItems: 'center', padding:5,borderRadius: 30 }} key={item.id}>
+                {/* <Image style={{width:80, height:80, borderRadius: 30}}
                  source={{
-                  uri: 'https://askwayin.com/assets/images/'+item.photo,
-                }} />
-                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:6}}>Real Estate</Text>
+                  uri: 'https://askwayin.com/assets/images/'+item.brand_img,
+                }} /> */}
+                {item.brand_img===""?
+                  (<Image style={{width:80, height:80, borderRadius: 40, marginLeft:6 }}
+                  source={require('../../imgss/noimg.png')} />)
+                  :(<Image style={{width:80, height:80, borderRadius: 40, marginLeft:6}}
+                    source={{
+                      uri: 'https://askwayin.com/assets/images/'+item.brand_img,
+                    }} 
+                    
+                    />)}
+                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#000000', marginTop:6}}>{item.brand_name}</Text>
               </View> 
                  );
                 })}

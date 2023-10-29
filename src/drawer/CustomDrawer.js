@@ -9,9 +9,10 @@ import {
   Alert,
   Platform,
   SafeAreaView,
-  AsyncStorage
+  
 } from 'react-native';
 //import {Platform, StyleSheet} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -174,22 +175,24 @@ var user_name="";
 // };
 //getData();
 
-// const removeItemValue=async()=> {
-//   try {
-//       await AsyncStorage.removeItem("user_name");
-//       await AsyncStorage.removeItem("user_email");
-//       await AsyncStorage.removeItem("token");
-//       return true;
-//   }
-//   catch(exception) {
-//       return false;
-//   }
-// }
+const removeItemValue=async()=> {
+  try {
+      await AsyncStorage.removeItem("user_name");
+      await AsyncStorage.removeItem("user_email");
+      await AsyncStorage.removeItem("token");
+      return true;
+  }
+  catch(exception) {
+      return false;
+  }
+}
 
 
 function logOut(){
   //removeItemValue();
-  props.navigation.navigate('SignInScreen')
+  props.navigation.navigate('SignInScreen');
+  props.navigation.closeDrawer();
+  removeItemValue();
 }
 
 
@@ -200,7 +203,9 @@ function logOut(){
     <View style={{flex: 1}}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{backgroundColor: '#FFFFFF'}}>
+        
+        contentContainerStyle={{backgroundColor: '#FFFFFF',paddingTop:-30}}
+        >
        
         <ImageBackground
           source={ImageFilesData.drawerbackground}

@@ -74,7 +74,7 @@ const Splash =  ({navigation}) => {
           start={{x: 0.0, y: 0.25}}
           end={{x: 0.5, y: 1.0}}
           locations={[0, 0.5, 0.6]}
-          colors={['#1D1D1B', '#1C5791', '#2A338A']}
+          colors={['#08d98a', '#00c174', '#00c174']}
           style={styles.linearGradient}>
           <Animatable.Image  
           animation="slideInRight"

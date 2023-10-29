@@ -20,6 +20,8 @@ import {
   Image,
   ImageBackground,
   FlatList,
+  Linking,
+  Platform,
   ActivityIndicator,
   ScrollView,
 
@@ -45,71 +47,24 @@ import Detailheader from '../components/Detailheader';
 function Details({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
-  const [islodinghome,setLoadingHome] = useState(false);
-  const [resdata,setResponseData] = useState('');
-  const getData = async ()=>{
-    //setLoadingHome(false)
-    await homePageApi().then((res)=>{
-     setResponseData(res);
-     setLoadingHome(true);
-    }).catch((error)=>{
-      setLoadingHome(true);
-      console.log(error);
-    });
-  };
-  useEffect(() => {
-    getData();
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested','Each child in a list should have a unique key prop']);
-    //LogBox.ignoreLogs(["Each child in a list should have a unique key prop"]);
-  }, []);
+  let isloding = useSelector((state)=>state.productReducer.isloding);
+  let productDetail = useSelector((state)=>state.productReducer.productDetail);
 
-  // let userList=useSelector((state)=>state.catReducer.userList);
-  // let isloding=useSelector((state)=>state.userReducer.isloding);
-  // useEffect(() => {
-  //   //Runs only on the first render
-  //   dispatch(getUserList(true));
-  // },[dispatch]);
-  //alert(JSON.stringify(userList));
+  const onPressMobileNumberClick = (number) => {
 
-  function aaa(){
-    Alert.alert('Click here for voice search ');
-  }
-  let isloding = useSelector((state)=>state.catReducer.isloding);
-  const RenderItemData = (props) => {
-  return (
-  <>
-    <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center'}}>
-    <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-      <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-        source={{
-          uri: 'https://askwayin.com/assets/images/' + props.itemData.photo,
-        }} />
-      </View>
-      <Text numberOfLines={2} style={{fontSize: 12, height:50, fontWeight: 'bold',color:'#000000', marginTop:5}}>{props.itemData.title}</Text>
-    </View>
-    {props.arr === 6 &&
-    (
-      <TouchableOpacity style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center'}}
-      onPress={()=>{
-        dispatch(getCatList(''));
-        navigation.navigate('category');
-        }}>
-     {isloding === true ? (<ActivityIndicator  />) :
-     (
-      <>
-    <View style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}>
-      <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
-        source={require('../../imgss/explore.png')} />
-    </View>
-    <Text numberOfLines={2} style={{fontSize: 12, height:50,fontWeight: 'bold', color:'#000000', marginTop:5}}>Explore</Text>
-        </>
-     )}
-    </TouchableOpacity>)}
-    </>
-  );
-};
+    let phoneNumber = '';
+    if (Platform.OS === 'android') {
+      phoneNumber = `tel:${number}`;
+    } else {
+      phoneNumber = `telprompt:${number}`;
+    }
 
-if (resdata === ''){
+    Linking.openURL(phoneNumber);
+ }
+
+ //const result = Object.keys(productDetail.data.schedules).map(key => ({[key]: productDetail.data.schedules[key]}));
+
+if (productDetail === ''){
     return (<Loading sizes="small" colors="#0000ff"></Loading>);
 }else {
   const { width, height } = Dimensions.get('window');
@@ -121,16 +76,16 @@ if (resdata === ''){
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         //backgroundColor={backgroundStyle.backgroundColor}
       />
-      <Detailheader navigation={navigation} resdata={resdata}/>
+      <Detailheader navigation={navigation} resdata={productDetail}/>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         nestedScrollEnabled={true}
-        style={{ width: '100%',backgroundColor:'#fff'}}
+        style={{ width: '100%',backgroundColor:'#F4F4F7'}}
          >
+
        <View> 
         <View style={{ flex: 1,  alignItems: 'flex-start', width:'100%', marginLeft:5, marginRight:5, backgroundColor:'#ffffff', paddingBottom:10, marginTop:10,paddingTop:20}}>
-        <Text numberOfLines={2} style={{fontSize: 18, fontWeight: 'bold', color:'#000', marginLeft:5,width:width-20}}>Dubai, Al Nahada Restaurants Dubai
-          400+ Listings</Text>
+        <Text numberOfLines={2} style={{fontSize: 18, fontWeight: 'bold', color:'#000', marginLeft:5,width:width-20}}>{productDetail.data.type}</Text>
 
         <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'center', alignItems: 'center', marginTop: 8}}>
               
@@ -144,13 +99,13 @@ if (resdata === ''){
             source={require('../../imgss/verified.png')} 
             resizeMode='center'
             />
-             <Text numberOfLines={1} style={{fontSize: 10,fontWeight: 'normal', color:'#000000'}}>Explore</Text>
+             <Text numberOfLines={1} style={{fontSize: 10,fontWeight: 'normal', color:'#000000'}}>Verified</Text>
              </View>
             </View>
            
 
             </View>
-            <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginLeft:12}}>Indian Palace</Text>
+            <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginLeft:12}}>{productDetail.data.ProductName}</Text>
             </View>
             <View style={{ flexDirection: 'row',alignItems:'flex-end'}}>
             <View style={{ justifyContent: 'center', alignItems: 'center', height:30,width:70,borderRadius:20,backgroundColor:'#5C30A9'  }}>
@@ -160,12 +115,14 @@ if (resdata === ''){
             </View>
             </View>
             <View>
+
+        {/* { productDetail.data.galleries.length == 0 ? "" : */}
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           nestedScrollEnabled={true} 
           >
-            {resdata.smallbanner.map((item, index) => {
+            {productDetail.data.galleries.map((item, index) => {
             return(
           <View style={{justifyContent: 'center', alignItems: 'center', padding:5}}  key={item.id}>
           <ImageBackground style={{width:120, height:140}}
@@ -180,6 +137,7 @@ if (resdata === ''){
             );
           })}
           </ScrollView>
+           {/* } */}
           </View>
          
           <View style={{flexDirection:'row',marginTop:15}}>
@@ -198,9 +156,11 @@ if (resdata === ''){
                 color:'#fff'
             }}
             />
-            <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'bold',color:'#FFF', marginLeft:2}}>+971545720202</Text>
+            <Text onPress={()=>{onPressMobileNumberClick(global.phoneno);}} numberOfLines={1} style={{fontSize: 10, fontWeight: 'bold',color:'#FFF', marginLeft:2}}>{global.phoneno}</Text>
             </TouchableOpacity>
-        <TouchableOpacity style={{flexDirection:'row', justifyContent: 'center', alignItems: 'center', height:30,width:80,borderRadius:5,backgroundColor:'#FFF',marginLeft:5,padding:5,borderColor:'#707070',borderWidth:0.5}}>
+        <TouchableOpacity style={{flexDirection:'row', justifyContent: 'center', alignItems: 'center', height:30,width:80,borderRadius:5,backgroundColor:'#FFF',marginLeft:5,padding:5,borderColor:'#707070',borderWidth:0.5}}
+          onPress={() => Linking.openURL(`whatsapp://send?phone=${global.phoneno}&text=Hello ...}`)}
+        >
           <Icon
             type={Icons.Ionicons}
             name="logo-whatsapp"
@@ -272,7 +232,7 @@ if (resdata === ''){
                 <View style={{ flexDirection: 'column',  justifyContent: 'center', alignItems: 'center'}} >
                 <View style={{ borderRadius:10, borderWidth:0.3, borderColor:'#707070',width:70, height:35, borderRadius: 5}}>
                 <View style={{backgroundColor:'#07A262', width:70, height:35,justifyContent: 'center', alignItems: 'center', borderRadius:3, }}>
-              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold', color:'#ffffff',}}>Rating 4</Text>
+              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold', color:'#ffffff',}}>Rating {productDetail.data.Rating}</Text>
             </View>
                 </View>
                
@@ -283,7 +243,7 @@ if (resdata === ''){
               //ratingImage={WATER_IMAGE}
               ratingColor='#F7C310'
               ratingBackgroundColor='#c8c7c8'
-              ratingCount={5}
+              ratingCount={productDetail.data.Rating}
               imageSize={12}
               onFinishRating={this.ratingCompleted}
               style={{ paddingVertical: 10, marginLeft:5 }}
@@ -291,14 +251,122 @@ if (resdata === ''){
                 </View>
                 <View style={{ flexDirection: 'row',alignItems:'flex-end'}}>
                 <View style={{ justifyContent: 'center', alignItems: 'center', height:30,width:70,borderRadius:5,backgroundColor:'red'  }}>
-                <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'bold',color:'#FFF', }}>Close</Text>
+                <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'bold',color:'#FFF', }}>{productDetail.data.OpenCloseTime}</Text>
                 </View>
                 </View>
                 </View>
-               <View>
-               <Text numberOfLines={2} style={{fontSize: 15, fontWeight: 'bold', color:'#000', marginLeft:5,width:width-10,marginTop:5}}>About the Business</Text>
-               <Text numberOfLines={100} style={{fontSize: 14,height:200, fontWeight: 'normal', color:'#000', marginLeft:5,width:width-10,marginTop:5}}>Serving authentic Indian cuisine complemented by traditional interiors for a regal dining experience</Text>
+               <View style={{paddingBottom:10, backgroundColor:'#ffffff', paddingTop:12, margin:8, borderRadius:8,paddingLeft:12, paddingRight:12}}>
+                <Text style={{fontSize: 15, fontWeight: 'bold', color:'#000', marginTop:5}}>About the Business</Text>
+                <Text style={{fontSize: 14,fontWeight: 'normal', color:'#000', marginTop:5}}>{productDetail.data.description}</Text>
                </View>
+
+            <View
+              style={{
+                flex: 1,
+                backgroundColor:'#ffffff',
+                margin:8, borderRadius:8,
+                paddingBottom:10, marginTop:10, paddingTop:12,  paddingLeft:12, paddingRight:12
+              }}>
+              <Text style={{fontSize: 15, fontWeight: 'bold', color:'#000', width:width-10,marginBottom:5}}>Amenities and More</Text>
+              <FlatList style={{}}
+                  data={productDetail.data.Amenities}
+                  keyExtractor={(item, index) => item.key}
+                  numColumns={3}
+                  renderItem={({ item, index }) => (
+                    <View style={{flexDirection:'row', width:"33%",height:25, marginTop:10, backgroundColor:'#ffffff', }}>
+                        <Text>{item}</Text>
+                    </View>
+
+                  )}/>
+            </View>
+
+            
+            <View
+              style={{
+                flex: 1,
+                //height:120,
+                backgroundColor:'#ffffff',
+                margin:8, borderRadius:8,
+                paddingBottom:10, marginTop:10, paddingTop:12,  paddingLeft:12, paddingRight:12
+              }}>
+              <Text style={{fontSize: 15, fontWeight: 'bold', color:'#000', width:width-10,marginBottom:5}}>Location & Hours
+</Text>
+
+              <View style={{width:'100%', height:140,ustifyContent: 'center', alignItems: 'center', borderRadius:4, marginTop:12}}>
+                <ImageBackground style={{ height:140, width:'100%'}}
+                    imageStyle={{ borderRadius: 4}}
+                    source={require('../../imgss/mapss.png')} >
+                    {/* <Text numberOfLines={1} style={{fontSize: 12, fontWeight: 'bold', color:'#FFF',paddingTop:15,paddingLeft:10,paddingRight:15}}>{item.title} </Text>
+                    <Text  style={{fontSize: 11, width:55,fontWeight: 'normal', color:'#FFF',paddingLeft:10,height:50}}>{item.subtitle}</Text> */}
+                </ImageBackground>
+              </View>
+
+              <FlatList style={{}}
+                  data={productDetail.data.schedules}
+                  keyExtractor={(item, index) => item.key}
+                  numColumns={2}
+                  renderItem={({ item, index }) => (
+                    <View style={{flexDirection:'row', width:"33%",height:25, marginTop:10, backgroundColor:'#ffffff', }}>
+                        <Text>{item}</Text>
+                    </View>
+                  )}/>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                height:120,
+                backgroundColor:'#ffffff',
+                margin:8, borderRadius:8,
+                paddingBottom:10, marginTop:10, paddingTop:12,  paddingLeft:12, paddingRight:12
+              }}>
+              <Text style={{fontSize: 15, fontWeight: 'bold', color:'#000', width:width-10,marginBottom:5}}>Frequently Asked Questions </Text>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                height:120,
+                backgroundColor:'#ffffff',
+                margin:8, borderRadius:8,
+                paddingBottom:10, marginTop:10, paddingTop:12,  paddingLeft:12, paddingRight:12
+              }}>
+              <Text style={{fontSize: 15, fontWeight: 'bold', color:'#000', width:width-10,marginBottom:5}}>Recommended Reviews </Text>
+              {productDetail.data.Review.data.map((item, index) => {
+              return(
+            <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', padding:5}}  key={item.id}>
+                {/* <Text  style={{fontSize: 11, fontWeight: 'normal', color:'#000000',paddingLeft:10,height:50}}>{item.name +"  "+ item.created_at}</Text>  */}
+                <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft:15}}>
+            
+            <Text numberOfLines={2} style={{fontSize: 11, fontWeight: 'bold',color:'#000000', marginTop:7}}>{item.name +"  "+ item.created_at}</Text>
+            {/* <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:7}}>{item.created_at}</Text> */}
+            
+            <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection:'row', marginTop:8}}>
+            <Icon 
+              style={{marginLeft:-3}}
+              type={Icons.Ionicons}
+              name={'location-outline'}
+              color={"#727272"}
+              size={13}
+            />
+              <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#727272', marginLeft:5}}>{item.name}</Text>
+            </View>
+            <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'normal', color:'#000000', marginLeft:15}}>{item.message}</Text>
+            </View>
+            </View>
+              );
+            })}
+            
+            </View>
+
+            
+
+
+            <View
+              style={{
+                paddingBottom:25, marginBottom:250, paddingTop:12,  paddingLeft:12, paddingRight:12
+              }}></View>
+
           </ScrollView>
          
     </SafeAreaView>

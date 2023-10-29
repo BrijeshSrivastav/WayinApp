@@ -43,6 +43,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CategoryFilter from '../components/CategoryFilter';
 import Header_with_Back from '../components/Header_with_Back';
 import { Dimensions } from 'react-native'
+import {getProductDetail} from '../redux/productaction';
+
 function Listing({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
@@ -83,18 +85,67 @@ function Listing({navigation}) {
   const RenderItemData = (props) => {
   return (
     <>
-    <Pressable style={{marginTop:12, justifyContent:'center'}} onPress={()=>navigation.navigate('details')}>   
+    <Pressable style={{marginTop:12, justifyContent:'center'}} 
+    onPress={()=>
+      {
+      navigation.navigate('details');
+      dispatch(getProductDetail(props.itemData.slug));
+      global.phoneno=props.itemData.phone_number;
+     }
+      }>   
     <Card style={{width:'100%'}}>
     {/* <Image style={{width:(width/2)-10, height:100, borderTopLeftRadius:5, borderTopRightRadius:5}} */}
-    <Image style={{height:130, borderTopLeftRadius:5, borderTopRightRadius:5}}
+          
+          {/* <Image style={{height:130, borderTopLeftRadius:5, borderTopRightRadius:5}}
               source={{
                 uri: 'https://askwayin.com/assets/images/'+props.itemData.photo,
-              }}  />
+          }}/> */}
+
+          <ImageBackground 
+            source={{
+              uri: 'https://askwayin.com/assets/images/'+props.itemData.photo,
+              }}
+            style={{ 
+              //width: '90%',
+              height: 130,
+              marginLeft:0,
+              }}
+              imageStyle={{ borderTopLeftRadius:5, borderTopRightRadius:5}} >
+
+            <View style={{ flexDirection: 'row', paddingLeft: 10, paddingRight:10, justifyContent: 'center', alignItems: 'center', marginTop: 1}}>
+              <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-start', alignItems: 'flex-start', }}>
+              <View style={{backgroundColor:'#8BC34B', paddingLeft:12, paddingRight:12, paddingTop:4, paddingBottom:4, borderRadius:6, marginTop:6}}>
+                <Text numberOfLines={2} style={{fontSize: 13, fontWeight: 'bold',color:'#ffffff', backgroundColor:'#8BC34B', padding:4, borderRadius:10}}>{props.close_open.toUpperCase()}</Text></View>
+                
+                { props.is_featuredd == 'FEATURED' ? 
+                <View style={{backgroundColor:'#00A1A1', paddingLeft:12, paddingRight:12, paddingTop:4, paddingBottom:4, borderRadius:6, marginTop:6, marginLeft:10}}>
+                <Text numberOfLines={2} style={{fontSize: 13, fontWeight: 'bold',color:'#ffffff', padding:4, borderRadius:10}}>{props.is_featuredd}</Text></View> 
+                : ""
+                }
+                </View>
+                
+              <View style={{ flexDirection: 'row', flex: 0.50, justifyContent: 'flex-end', alignItems: 'flex-end',  }}>
+                {/* <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold',color:'#000000', }}>View all</Text> */}
+                {/* <Image style={{width:12, height:12, borderRadius: 2, tintColor:'#000000', marginLeft:5, marginBottom:2, }}
+                  source={require('../../imgss/favourite.png')} /> */}
+                <View style={{backgroundColor:'#937B77', width:30, height:30, justifyContent:'center', alignItems:'center', borderRadius:25}}>
+                    <Icon 
+                      style={{marginTop:3, marginLeft:1}}
+                      type={Icons.Ionicons}
+                      name={'heart-outline'}
+                      color={"#ffffff"}
+                      size={22}
+                    />
+                </View>
+              </View>
+            </View>
+
+          </ImageBackground>
         
           <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft:15}}>
             
-            <Text numberOfLines={2} style={{fontSize: 11, fontWeight: 'bold',color:'#E02932', marginTop:7}}>{props.itemData.slug}</Text>
-            <Text numberOfLines={2} style={{fontSize: 10, fontWeight: 'bold',color:'#000000', marginTop:7}}>{props.itemData.name}</Text>
+            <Text numberOfLines={2} style={{fontSize: 11, fontWeight: 'bold',color:'#E02932', marginTop:7}}>{global.catnam}</Text>
+            <Text numberOfLines={2} style={{fontSize: 14, fontWeight: 'bold',color:'#000000', marginTop:7}}>{props.itemData.name}</Text>
             
             <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', flexDirection:'row', marginTop:8}}>
             <Icon 
@@ -146,7 +197,7 @@ function Listing({navigation}) {
               <View style={{flex:.5}}>
               <View style={{width:'100%', justifyContent:'flex-start',flexDirection:'row', marginTop:10,marginBottom:10, }}>
               <View style={{backgroundColor:'#07A262', width:40, height:30,justifyContent: 'center', alignItems: 'center', borderRadius:3, }}>
-              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold', color:'#ffffff',}}>4.0</Text>
+              <Text numberOfLines={1} style={{fontSize: 14, fontWeight: 'bold', color:'#ffffff',}}>5.0</Text>
             </View>
             <Rating
               type='custom'
@@ -199,8 +250,8 @@ return (<Loading sizes="small" colors="#0000ff"></Loading>);
      <CategoryFilter color={"#FFF"}/>    
   <View>
      <FlatList
-        data={productList.data.allproduct}
-        renderItem={({item}) => <RenderItemData itemData={item} navigation={navigation}/>}
+        data={productList.data.lishting}
+        renderItem={({item}) => <RenderItemData itemData={item} navigation={navigation} close_open={productList.data.OpenCloseTime} is_featuredd={productList.data.is_feature}/>}
         keyExtractor={item => item.id}
         numColumns={1}
         contentContainerStyle={{ paddingBottom: 100,paddingRight:15, paddingLeft:15}}

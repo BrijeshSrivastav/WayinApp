@@ -76,32 +76,18 @@ const Detailheader=(props)=>{
               nestedScrollEnabled={true} 
              
               >
-            {props.resdata.partners.map((item, index) => {
+            {props.resdata.data.galleries.map((item, index) => {
               return(
                <View style={{ justifyContent: 'center', alignItems: 'center', padding:5, }} key={item.id}>
-                <Image style={{width:200, height:70, borderRadius: 12}}
+                <Image style={{width:200, height:80, borderRadius: 12}}
                  source={{
-                  uri: "https://img.freepik.com/free-vector/mega-sale-banner-blue-yellow-colors_1017-32176.jpg?w=826&t=st=1695828006~exp=1695828606~hmac=4d0348a87a8bd5a37a2417188f9e3a8c7980ddd084b24ceded4bc7be1faaf88b",
+                  uri: "https://askwayin.com/assets/images/"+item.photo,
                 }} />
                   {/* <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:6}}>Real Estate</Text> */}
               </View> 
                  );
                 })}
-              {/* <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
-              <Image style={{width:180, height:45, borderRadius: 12}}
-                  source={require('../../imgss/imgp5.png')} />
-                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:6}}>Real Estate</Text>
-              </View>
-              <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
-              <Image style={{width:180, height:45, borderRadius: 12}}
-                  source={require('../../imgss/imgp3.png')} />
-                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:6}}>Real Estate</Text>
-              </View>
-              <View style={{ justifyContent: 'center', alignItems: 'center', padding:5}}>
-              <Image style={{width:180, height:45, borderRadius: 12}}
-                  source={require('../../imgss/imgp4.png')} />
-                  <Text numberOfLines={2} style={{fontSize: 12, fontWeight: 'bold', color:'#ffffff', marginTop:6}}>Real Estate</Text>
-              </View> */}
+            
               </ScrollView>
           </View>
          
@@ -113,7 +99,7 @@ const Detailheader=(props)=>{
 
 const styles = StyleSheet.create({
     container: {
-     height:200,
+     height:180,
      backgroundColor:'#E8F5F6'
     },
     locationview:{

@@ -8,6 +8,7 @@ import SubCategoryheader from '../components/SubCategoryheader';
 import SubCategoryItem from '../components/SubCategoryItem';
 import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../components/Loading';
+
 export default function SubCategory({navigation}) {
   const DATA = [
     {
@@ -76,33 +77,58 @@ export default function SubCategory({navigation}) {
       cat_img:ImageFilesData.subcate_image15
     },
   ];
+
   let subcatList = useSelector((state)=>state.catReducer.subcatList);
-  //alert("ssssss "+subcatList);
+  // if(subcatList!==""){
+  //   console.log("https://askwayin.com/assets/images/"+subcatList.data.SubCatBanner);
+  // }
+  //  alert("ssssss "+subcatList.data.SubCatBanner);
+  //  console.log("https://askwayin.com/assets/images/"+subcatList.data.SubCatBanner);
+
   if(subcatList === ""){
     return (<Loading sizes="small" colors="#0000ff"></Loading>);
    }else{
   return (
     <SafeAreaView style={styles.container}>
      <SubCategoryheader navigation={navigation}/>
-     <View style={{height:110,width:'100%',borderRadius:15, paddingLeft:5, paddingRight:5}}>
+     {subcatList.data.status !== false && 
+     (<View style={{height:130,width:'100%',borderRadius:10, paddingLeft:12, paddingRight:12}}>
       <Image
-        source={ImageFilesData.subcate_banner}
-        style={{height:110,width:'100%',borderRadius:15}}
+      //source={{uri: 'https://askwayin.com/assets/images/XAM3Bm1y1693033069.jpg'}}
+      source={{uri: 'https://askwayin.com/assets/images/'+subcatList.data.SubCatBanner}}
+      style={{height:110,width:'100%',borderRadius:10, }}
+    />
+    
+  </View>)}
+
+  {/* 
+  <View style={{height:300,width:'100%',borderRadius:20, paddingLeft:5, paddingRight:5, backgroundColor:"#000000"}}>
+  <Image
+      //source={{uri: 'https://askwayin.com/assets/images/XAM3Bm1y1693033069.jpg'}}
+      source={{uri: 'https://askwayin.com/assets/images/vzRVqC1W1691058430.png'}}
+      style={{height:300,width:'100%',borderRadius:20}}
     /> 
-   </View>
-     {/* <View style={styles.listviewM}> */}
-     <FlatList
+  </View> 
+  */}
+
+     <>
+      {subcatList.data.status===false ?(
+      <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+        <Text style={{fontWeight:'bold'}}> ho! Sorry No Records Found..</Text>
+      </View>):   
+     (<FlatList
         data={subcatList.data.subcategory}
         renderItem={({item}) => <SubCategoryItem itemData={item} navigation={navigation}/>}
         keyExtractor={item => item.id}
-        contentContainerStyle={{ paddingBottom: 40, marginTop:12}}
-        numColumns={4}
-      />
-      {/* </View> */}
+        contentContainerStyle={{ paddingBottom: 40, marginTop:10, marginLeft:3, marginRight:3}}
+        numColumns={3}
+      />)}
+      </>
     </SafeAreaView>
   );
 }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -111,7 +137,8 @@ const styles = StyleSheet.create({
   },
   
   listviewM:{
-    marginTop:15,
-    marginBottom:200
+    marginTop:10,
+    marginBottom:250
   }
+
 });

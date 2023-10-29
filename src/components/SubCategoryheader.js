@@ -53,7 +53,7 @@ const SubCategoryheader=(props)=>{
           </View>
         </View>
           </View>
-          <CategoryFilter color={"#F3FAFF"}/>
+          {/* <CategoryFilter color={"#F3FAFF"}/> */}
        </View>       
            
         )
@@ -62,7 +62,7 @@ const SubCategoryheader=(props)=>{
 
 const styles = StyleSheet.create({
     container: {
-     height:240
+     height:150
     },
     locationview:{
       flexDirection:'row',  

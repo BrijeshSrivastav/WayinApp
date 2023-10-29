@@ -14,25 +14,26 @@ const SubCategoryItem=(props)=>{
   }
     return(
 
-<TouchableOpacity style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center',padding:13}} 
+<TouchableOpacity style={{ flex: 0.33, justifyContent: 'center', alignItems: 'center',padding:13}} 
       onPress={()=>{
             dispatch(getProductList(props.itemData.slug));
             props.navigation.navigate('listing');
+            global.catnam =props.itemData.title;
             }}>  
         <View style={{justifyContent:'center',alignItems:'center'}}>
-          {/* <View style={{ borderRadius:25, borderWidth:0.5, borderColor:'#00A1A0', padding:10,justifyContent:'center',alignItems:'center'}}> */}
-          <View style={{ borderRadius:20, justifyContent:'center',alignItems:'center'}}>
+          <View style={{ borderRadius:50, borderWidth:0, borderColor:'#00A1A0', padding:2,justifyContent:'center',alignItems:'center'}}>
+          {/* <View style={{ borderRadius:20, justifyContent:'center',alignItems:'center'}}> */}
             <View style={{justifyContent:'center',alignItems:'center'}}>
-            <Image style={{width:40, height:40, borderRadius: 0}}
+            <Image style={{width:80, height:80, borderRadius: 50, resizeMode:'cover'}}
               source={{
-                uri: 'https://askwayin.com/assets/images/'+props.itemData.photo,
+                uri: 'https://askwayin.com/assets/images/'+props.itemData.photo1,
               }} 
               //onLoadStart={()=>onLoadingImg(true,'onLoadStart')}
               //onLoadEnd={()=>onLoadingImg(false,'onLoadStart')}
             />
               </View>
               </View>
-              <Text numberOfLines={2} style={{fontSize: 10, fontWeight: 'bold',color:'#000000', marginTop:7,alignItems:'center'}}>{props.itemData.title}</Text>
+              <Text numberOfLines={2} style={{fontSize: 10, height:30, fontWeight: 'bold',color:'#000000', marginTop:7,alignItems:'center'}}>{props.itemData.title}</Text>
           </View>
           </TouchableOpacity>
 

@@ -7,8 +7,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { ImageFilesData } from '../constants/images';
 import CommonCard from '../common/CommonCard';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width} = Dimensions.get('window');
-export default function UserList() {
+
+export default function UserList({navigation}) {
   const [data, SetData] = useState([1, 1, 1, 1, 1]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const MenuArr = [
@@ -141,6 +143,17 @@ export default function UserList() {
 ],
 }
 ];
+const removeItemValue=async()=> {
+  try {
+      await AsyncStorage.removeItem("user_name");
+      await AsyncStorage.removeItem("user_email");
+      await AsyncStorage.removeItem("token");
+      return true;
+  }
+  catch(exception) {
+      return false;
+  }
+}
   return (
     <Fragment>
     <SafeAreaView style={{ flex: 0, backgroundColor: '#069199' }} />
@@ -153,7 +166,14 @@ export default function UserList() {
           >
           <View style={{margin: 20,justifyContent:'center'}}>
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+           <TouchableOpacity onPress={()=>navigation.goBack()}>
            <AntDesign name="arrowleft" size={20} color="#FFFFFF"   />
+           </TouchableOpacity>
+           <TouchableOpacity onPress={()=>{
+            navigation.navigate('SignInScreen')
+            removeItemValue()
+          }
+            }>
            <Text
             style={{
               color: '#FFFFFF',
@@ -165,6 +185,7 @@ export default function UserList() {
             }}>
             Logout
           </Text>
+          </TouchableOpacity>
             </View>  
         <View style={{justifyContent:'center',alignItems:'center'}}>    
           <Image
@@ -178,7 +199,7 @@ export default function UserList() {
               fontFamily: 'Roboto-Medium',
               marginBottom: 5,
             }}>
-           Hello! Mohamed Feroz
+           Hello! {global.kddd}
           </Text>
           </View> 
           </View>
