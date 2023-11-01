@@ -41,32 +41,32 @@ export const PostReview = () => {
       <Text style={{textAlign:'center',fontWeight:'bold',fontSize:18,marginTop:5}}> Post Review </Text>
       <View style={{marginTop:20}}>
         <View
-        style={{borderRadius:25, borderWidth:0.5,borderColor:'grey',height:40,width:width-30,marginTop:10,marginLeft:20}}
+        style={{borderRadius:5, borderWidth:0.5,borderColor:'grey',height:40,width:width-30,marginTop:10,marginLeft:15}}
         >
        <TextInput 
           placeholder="Name" 
           placeholderTextColor={"#000000"}
-          style={{height:30,width:width-30,paddingLeft:20,paddingTop:10}}
+          style={{height:30,width:width-30,paddingLeft:10,paddingTop:10}}
           />
         </View>
         
         <View
-        style={{borderRadius:25,borderWidth:0.5,borderColor:'grey',height:40,width:width-30,marginLeft:20,marginTop:10}}
+        style={{borderRadius:5,borderWidth:0.5,borderColor:'grey',height:40,width:width-30,marginLeft:15,marginTop:10}}
         >
             <TextInput 
           placeholder="Email" 
           placeholderTextColor={"#000000"}
-          style={{height:30,width:width-30,paddingLeft:20,paddingTop:10}}
+          style={{height:30,width:width-30,paddingLeft:10,paddingTop:10}}
           />
         </View>
        
         <View
-        style={{borderRadius:25, borderWidth:0.5,borderColor:'grey',height:120,width:width-30,marginTop:10,marginLeft:20, marginBottom:20,}}
+        style={{borderRadius:5, borderWidth:0.5,borderColor:'grey',height:120,width:width-30,marginTop:10,marginLeft:15, marginBottom:20,}}
         >
        <TextInput 
           placeholder="Write feedback" 
           placeholderTextColor={"#000000"}
-          style={{height:30,width:width-30,paddingLeft:20,paddingTop:10}}
+          style={{height:30,width:width-30,paddingLeft:10,paddingTop:10}}
           />
         </View>
        
@@ -82,7 +82,7 @@ export const PostReview = () => {
       </View>
       <View style={{justifyContent:'center',alignItems:'center',marginTop:30}}>
       <TouchableOpacity style={{ height:30,width:100,borderRadius:5,backgroundColor:'red',justifyContent:'center',alignItems:'center'}}>
-                  <Text numberOfLines={1} style={{fontSize: 10, fontWeight: 'bold',color:'#ffffff',alignItems:'center'}}>Post Review</Text>
+                  <Text numberOfLines={1} style={{fontSize: 12, fontWeight: 'bold',color:'#ffffff',alignItems:'center'}}>Post Review</Text>
         </TouchableOpacity>
         </View>
     </View>

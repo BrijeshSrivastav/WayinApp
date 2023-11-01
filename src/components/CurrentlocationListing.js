@@ -11,7 +11,7 @@ const CurrentlocationListing=()=>{
     <TouchableOpacity
     style={{flexDirection:'row'}}
        >
-      <Text style={{fontWeight:'bold',color:'#000'}}>Al Barsa Dubai</Text>
+      <Text style={{fontWeight:'bold',color:'#000'}}>Al Barsha Dubai</Text>
       <Icon
      type={Icons.SimpleLineIcons}
      name="arrow-down"

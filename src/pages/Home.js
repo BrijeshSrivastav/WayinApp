@@ -32,7 +32,7 @@ import Carousel from '../components/Carousel'
 const carouselItem = require('../assets/carousel.json');
 //import { dummyData } from '../data/Data'
 
-import { ImageSlider } from "react-native-image-slider-banner";
+//import { ImageSlider } from "react-native-image-slider-banner";
 import Header from '../components/Header';
 import Icon, {Icons} from '../components/Icons';
 import CarouseBanner from '../components/CarouseBanner'
@@ -42,6 +42,11 @@ import {getCatList,getSubCatList,setUserName} from '../redux/categoryaction'
 import Loading from '../components/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native'
+import ImageSlider from "../pages/image-slider";
+
+import { SliderBox } from 'react-native-image-slider-box'
+import Gallery from 'react-native-image-gallery';
+
 function Home({navigation}) {
   const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch()
@@ -50,31 +55,68 @@ function Home({navigation}) {
   const [resdata,setResponseData]=useState('');
   const [bannerData,setBnnerData]=useState('');
   
+  const images = [
+    require('../../imgss/list_img.png'),
+    require('../../imgss/list_img.png'),
+    require('../../imgss/list_img.png'),
+    require('../../imgss/list_img.png'),
+    ];
+
+    var data = [];
+
   const getData=async ()=>{
     //setLoadingHome(false)
     await homePageApi().then((res)=>{
      setResponseData(res);
      setBnnerData(res.bannerslider);
      setLoadingHome(true);
+
+    //  data = res.bannerslider.map(function(item) {
+    //   return {
+    //     //key: item.id,
+    //     'uri': "https://askwayin.com/assets/images/"+item.photo
+    //   };
+    //  });
+    //  console.log("**********************************");
+    //  console.log(data);
+    //  console.log("**********************************");
+    //  global.kdarrwq = res.bannerslider;
+
     }).catch((error)=>{
       setLoadingHome(true);
       console.log(error);
     })
+
+    // console.log("**********************************");
+    //   var jsonData = [
+    //     { "id": 1, "name": "Hotels" },
+    //     { "id": 2, "name": "Embassies" }
+    //   ];
+  
+    //   var data = jsonData.map(function(item) {
+    //     return {
+    //       //key: item.id,
+    //       label: item.name
+    //     };
+    //   });
+      
+    //   console.log(data);
+    //   console.log("**********************************");
   }
 
   const _retrieveData = async () => {
    // alert("ddddd")
     try {
       const value = await AsyncStorage.getItem('token');
-      //alert(value);
+      //  alert(value);
       if (value !== null) {
-        // We have data!!
+        //  We have data!!
         dispatch(setUserName(value));
         console.log(value);
 
       }
     } catch (error) {
-      // Error retrieving data
+      //  Error retrieving data
     }
   };
   useEffect(() => {
@@ -94,7 +136,6 @@ function Home({navigation}) {
       "hardwareBackPress",
       backAction
     );
-
     return () => backHandler.remove();
   }, []);
 
@@ -104,35 +145,31 @@ function Home({navigation}) {
     //LogBox.ignoreLogs(["Each child in a list should have a unique key prop"]);
   }, []);
  
- 
   function aaa(){
     //Alert.alert('Click here for voice search ');
     //navigation.navigate('listing')
-
     navigation.navigate('SignInScreen')
   }
+
   function onLoadingImg(value,lable){
     setLoadingImage(value,lable)
   }
+
   let isloding=useSelector((state)=>state.catReducer.isloding);
-  //_retrieveData();
+  //  _retrieveData();
   const RenderItemData = (props) => {
   return(
     <>
-    
     <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center'}}>
     <TouchableOpacity style={{ borderRadius:10, borderWidth:0.5, borderColor:'#00A1A0'}}
      onPress={()=>{
       dispatch(getSubCatList(props.itemData.slug))
       navigation.navigate('subcategory')
-      }}
-    >
+      }}>
       <Image style={{width:36, height:36, borderRadius: 2, margin:6}}
         source={{
           uri: 'https://askwayin.com/assets/images/'+props.itemData.photo,
-        }} 
-       
-        />
+        }}/>
       </TouchableOpacity>
       <Text numberOfLines={2} style={{fontSize: 12, height:50, fontWeight: 'bold',color:'#000000', marginTop:5}}>{props.itemData.title}</Text>
     </View>
@@ -164,7 +201,7 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
     <SafeAreaView >
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        //backgroundColor={backgroundStyle.backgroundColor}
+        //  backgroundColor={backgroundStyle.backgroundColor}
       />
       <Header navigation={navigation}/>
       <ScrollView
@@ -210,17 +247,42 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
 
        
           {bannerData === "" ? (<Loading />):
-          (<View>
-            <Carousel data = {bannerData}/>
-        </View>)}
+          (
+            // <View>
+              // {/* <Carousel data = {bannerData}/> */}
+
+              <View style={{borderRadius:10, }}>
+              <SliderBox style={{width:'93%', height:100, borderRadius:10,}}
+                // images={images}
+                images={
+                  bannerData.map(function(item) {
+                    return {
+                      //key: item.id,
+                      'uri': "https://askwayin.com/assets/images/"+item.photo
+                    };
+                  })
+                }
+                dotColor="#00A1A0"
+                inactiveDotColor="#ffffff"
+                dotStyle={{height: 5, width: 18, borderRadius: 50}} imageLoadingColor="black"
+                autoplay={true}
+                autoplayInterval={5000}
+                circleLoop={true}
+                // onCurrent ImagePressed={(index) => alert(index+1)}
+                firstItem={0}
+                paginationBoxVerticalPadding={5}
+              />
+
+            </View>
+            
+            )
+          }
           
          
           {/* <View>
             <CarouseBanner bannerData = {bannerData}/>
         </View>  */}
           </View>
-
-         
           
           {/* https://github.com/meliorence/react-native-snap-carousel/issues/138 */}
           

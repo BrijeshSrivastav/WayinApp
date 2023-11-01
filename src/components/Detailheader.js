@@ -53,6 +53,7 @@ const Detailheader=(props)=>{
             size={25}
             style={{
                 marginTop:20,
+                marginRight:12,
                 color:'#000'
             }}
             />
@@ -72,13 +73,13 @@ const Detailheader=(props)=>{
           <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
-              style={{paddingLeft:12,marginTop:30 }}
+              style={{paddingLeft:5,marginTop:30 }}
               nestedScrollEnabled={true} 
               >
             {props.resdata.data.galleries.map((item, index) => {
               return(
-               <View style={{ justifyContent: 'center', alignItems: 'center', padding:5, }} key={item.id}>
-                <Image style={{width:200, height:80, borderRadius: 12}}
+               <View style={{ justifyContent: 'center', alignItems: 'center', padding:3, }} key={item.id}>
+                <Image style={{width:200, height:80, borderRadius: 3}}
                  source={{
                   uri: "https://askwayin.com/assets/images/"+item.photo,
                 }} />

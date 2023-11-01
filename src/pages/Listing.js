@@ -203,12 +203,21 @@ function Listing({navigation}) {
             <Rating
               type='custom'
               //ratingImage={WATER_IMAGE}
+              // ratingColor='#F7C310'
+              // ratingBackgroundColor='#c8c7c8'
+              // ratingCount={5}
+              // imageSize={12}
+              // onFinishRating={this.ratingCompleted}
+              // style={{ paddingVertical: 10, marginLeft:5 }}
               ratingColor='#F7C310'
-              ratingBackgroundColor='#c8c7c8'
+              readonly
+              ratingBackgroundColor='#d2d2d2'
               ratingCount={5}
+              //startingValue={productDetail.data.Rating} // dynamic
+              startingValue={3.5}
               imageSize={12}
-              onFinishRating={this.ratingCompleted}
-              style={{ paddingVertical: 10, marginLeft:5 }}
+              tintColor={'#F4F4F7'}
+              style={{ paddingVertical: 10, marginLeft:5, tintColor:'#F4F4F7', }}
             />
               </View>
               </View>
@@ -252,7 +261,7 @@ return (<Loading sizes="small" colors="#0000ff"></Loading>);
      <View>
      {productList.data.status===false ? (
        <View style={{width:width,height:height-150,justifyContent:'center',alignItems:'center'}}>
-       <Text style={{fontWeight:'bold'}}> ho! Sorry No Records Found..</Text>
+       <Text style={{fontWeight:'bold'}}> oh! Sorry No Records Found..</Text>
      </View>
      ):
      (

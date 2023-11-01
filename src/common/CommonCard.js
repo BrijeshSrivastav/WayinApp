@@ -69,6 +69,7 @@ const CommonCard = ({
             name="keyboard-arrow-right"
             style={{
               width: 24,
+              color:'#000000',
               height: 24,
               //tintColor: bgColor ? 'red' : '#6D6D6D',
             }}

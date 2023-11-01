@@ -12,10 +12,30 @@ import { View } from 'react-native-animatable';
 import Gallery from 'react-native-image-gallery';
 import Header_lmageviewer from '../components/Header_lmageviewer';
 import { useSelector, useDispatch } from 'react-redux';
+
+import { SliderBox } from 'react-native-image-slider-box'
+
+
 function ImageViewerData({navigation}) {
   const [panEnabled, setPanEnabled] = useState(false);
 
+  const images = [
+    // require('../../imgss/list_img.png'),
+    // require('../../imgss/list_img.png'),
+    // require('../../imgss/list_img.png'),
+    // require('../../imgss/list_img.png'),
+     {uri: 'https://askwayin.com/assets/images/1158576461697107829.jpg'},
+     {uri: 'https://askwayin.com/assets/images/Q8SKnPJ11691002479.jpg'},
+     {uri: 'https://askwayin.com/assets/images/vzRVqC1W1691058430.png'},
+    ];
 
+    // console.log("**********************************");
+    // console.log(images);
+    // console.log("**********************************");
+
+    console.log("**********************************");
+    console.log(global.kdarrwq);
+    console.log("**********************************");
 
   const scale = useRef(new Animated.Value(1)).current;
   const translateX = useRef(new Animated.Value(0)).current;
@@ -83,7 +103,9 @@ function ImageViewerData({navigation}) {
         ]}
       >
         </Gallery> */}
-        <PanGestureHandler
+
+
+        {/* <PanGestureHandler
         onGestureEvent={onPanEvent}
         ref={panRef}
         simultaneousHandlers={[pinchRef]}
@@ -111,7 +133,34 @@ function ImageViewerData({navigation}) {
           </PinchGestureHandler>
         </Animated.View>
 
-      </PanGestureHandler>
+      </PanGestureHandler> */}
+
+          <View style={{ height:'100%',marginLeft:10, marginRight:10, marginTop:200}}>
+            <View style={{height:'100%',borderRadius:6, }}>
+              <SliderBox style={{width:'94.6%', height:180, borderRadius:6,}}
+                //images={images}
+                images={
+                  global.kdarrwq.map(function(item) {
+                    return {
+                      //key: item.id,
+                      'uri': "https://askwayin.com/assets/images/"+item.photo
+                    };
+                  })
+                }
+                dotColor="#00A1A0"
+                inactiveDotColor="#ffffff"
+                dotStyle={{height: 5, width: 18, borderRadius: 50}} imageLoadingColor="black"
+                autoplay={true}
+                autoplayInterval={3000}
+                circleLoop={true}
+                // onCurrent ImagePressed={(index) => alert(index+1)}
+                firstItem={0}
+                paginationBoxVerticalPadding={5}
+              />
+
+            </View>
+            </View>
+
   </SafeAreaView>
   )
 }

@@ -113,7 +113,7 @@ export default function SubCategory({navigation}) {
      <>
       {subcatList.data.status===false ?(
       <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-        <Text style={{fontWeight:'bold'}}> ho! Sorry No Records Found..</Text>
+        <Text style={{fontWeight:'bold'}}> oh! Sorry No Records Found..</Text>
       </View>):   
      (<FlatList
         data={subcatList.data.subcategory}

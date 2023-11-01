@@ -25,13 +25,22 @@ const SubCategoryItem=(props)=>{
           <View style={{ borderRadius:50, borderWidth:0, borderColor:'#00A1A0', padding:2,justifyContent:'center',alignItems:'center'}}>
           {/* <View style={{ borderRadius:20, justifyContent:'center',alignItems:'center'}}> */}
             <View style={{justifyContent:'center',alignItems:'center'}}>
-            <Image style={{width:80, height:80, borderRadius: 50, resizeMode:'cover'}}
+            {/* <Image style={{width:80, height:80, borderRadius: 50, resizeMode:'cover'}}
               source={{
                 uri: 'https://askwayin.com/assets/images/'+props.itemData.photo1,
-              }} 
-              //onLoadStart={()=>onLoadingImg(true,'onLoadStart')}
-              //onLoadEnd={()=>onLoadingImg(false,'onLoadStart')}
-            />
+              }}
+            /> */}
+
+              {props.itemData.photo1===""?
+                  (<Image style={{width:80, height:80, borderRadius: 50, resizeMode:'cover' }}
+                  source={require('../../imgss/noimg.png')} />)
+                  :(<Image style={{width:80, height:80, borderRadius: 50, resizeMode:'cover'}}
+                  source={{
+                    uri: 'https://askwayin.com/assets/images/'+props.itemData.photo1,
+                  }}
+                />)
+              }
+
               </View>
               </View>
               <Text numberOfLines={2} style={{fontSize: 10, height:30, fontWeight: 'bold',color:'#000000', marginTop:7,alignItems:'center'}}>{props.itemData.title}</Text>

@@ -6,21 +6,19 @@ import Icon, {Icons} from '../components/Icons';
 
 const CurrentlocationComponent=()=>{
     return(
-    <View style={{marginTop:15}} 
-    >
+    <View style={{marginTop:15}}>
     <TouchableOpacity
-    style={{flexDirection:'row'}}
-       >
+      style={{flexDirection:'row'}}>
       <Text style={{fontWeight:'bold',color:'#000'}}>Current Location</Text>
       <Icon
-     type={Icons.SimpleLineIcons}
-     name="arrow-down"
-     size={14}
-     color={'#000000'}
-     style={{marginTop:3,marginLeft:3}}
-   />
+        type={Icons.SimpleLineIcons}
+        name="arrow-down"
+        size={14}
+        color={'#000000'}
+        style={{marginTop:3,marginLeft:3}}
+      />
     </TouchableOpacity>
-      <Text style={{fontSize:10,color:'#000'}}>Al Barsa Dubai</Text>
+      <Text style={{fontSize:10,color:'#000'}}>Al Barsha Dubai</Text>
      </View>
     )
 }
