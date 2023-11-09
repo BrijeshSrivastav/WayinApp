@@ -36,7 +36,7 @@ const SubCategoryItem=(props)=>{
                   source={require('../../imgss/noimg.png')} />)
                   :(<Image style={{width:80, height:80, borderRadius: 50, resizeMode:'cover'}}
                   source={{
-                    uri: 'https://askwayin.com/assets/images/'+props.itemData.photo1,
+                    uri: 'https://askwayin.com/assets/images/'+props.itemData.photo3,
                   }}
                 />)
               }

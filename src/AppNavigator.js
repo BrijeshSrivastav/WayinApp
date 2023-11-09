@@ -3,6 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Splash from './pages/Splash';
 import Parent from './pages/Parent';
+
+import ListScroll from './pages/ListScroll';
+
 import SubCategory from './pages/SubCategory';
 import Category from './pages/Category';
 import SignInScreen from './pages/SignInScreen';
@@ -38,6 +41,12 @@ const AppNavigator = () => {
         <Stack.Screen
           name="Parent"
           component={Parent}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="ListScroll"
+          component={ListScroll}
           options={{headerShown: false}}
         />
 

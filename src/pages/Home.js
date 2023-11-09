@@ -148,7 +148,7 @@ function Home({navigation}) {
   function aaa(){
     //Alert.alert('Click here for voice search ');
     //navigation.navigate('listing')
-    navigation.navigate('SignInScreen')
+    navigation.navigate('ListScroll')
   }
 
   function onLoadingImg(value,lable){
@@ -227,7 +227,7 @@ return(<Loading sizes="small" colors="#0000ff"></Loading>)
               />
 
               <View style={{padding:6}}> 
-              <TouchableOpacity >
+              <TouchableOpacity onPress={aaa()}>
                 <Image
                   source={require('../../imgss/microphone.png')}
                   style={{ height: 20, width: 20, margin:5,tintColor:'#7B7B7B'}}/>

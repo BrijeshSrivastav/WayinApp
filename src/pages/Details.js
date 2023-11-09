@@ -326,7 +326,7 @@ if (productDetail === ''){
                   numColumns={3}
                   renderItem={({ item, index }) => (
                     <View style={{flexDirection:'row', width:"33%", marginTop:10, backgroundColor:'#ffffff', }}>
-                        <Text style={{whiteSpace: "pre-line"}}>{item}</Text>
+                        <Text style={{}}>{item}</Text>
                     </View>
 
                   )}/>
@@ -413,18 +413,15 @@ if (productDetail === ''){
               <FlatList style={{}}
                   data={productDetail.data.Faqs}
                   keyExtractor={(item, index) => item.key}
-                  numColumns={3}
+                  //  numColumns={3}
                   renderItem={({ item, index }) => (
                     <View style={{flexDirection:'column', width:"98%", marginTop:10, backgroundColor:'#ffffff', }}>
                         <Text style={{fontSize: 13, fontWeight: 'bold', color:'#000',}}>{item.faq_name}</Text>
                         <Text style={{marginTop:5, fontSize: 12,}}>{item.faq_details}</Text>
-                        {/* <Text style={{fontSize: 13, fontWeight: 'bold', color:'#000',marginTop:12}}>{item.faq_name}</Text>
-                        <Text style={{marginTop:5, fontSize: 12,}}>{item.faq_details}</Text> */}
                     </View>
-
                   )}/>
-              
             </View>
+
 
             <View
               style={{
