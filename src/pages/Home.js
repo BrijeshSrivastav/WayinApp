@@ -148,7 +148,7 @@ function Home({navigation}) {
   function aaa(){
     //Alert.alert('Click here for voice search ');
     //navigation.navigate('listing')
-    navigation.navigate('ListScroll')
+    //navigation.navigate('ListScroll')
   }
 
   function onLoadingImg(value,lable){
